@@ -1,0 +1,68 @@
+<view class="page" wx:if="{{project}}">
+  <scroll-view scroll-y enable-back-to-top="true" class="body">
+    <view class="hero">
+      <view class="hero-top">
+        <text class="hero-title">{{project.title}}</text>
+        <text class="badge" wx:if="{{project.safe}}">企业已认证</text>
+      </view>
+      <view class="hero-stats">
+        <text class="hero-bounty">¥{{project.bounty}}</text>
+        <text class="hero-label">项目赏金</text>
+      </view>
+      <text class="hero-company">{{project.company}}</text>
+      <view class="skills">
+        <block wx:for="{{project.skills}}" wx:key="*this">
+          <text class="chip">{{item}}</text>
+        </block>
+      </view>
+    </view>
+
+    <view class="section">
+      <text class="section-title">项目说明</text>
+      <text class="section-text">{{project.desc}}</text>
+    </view>
+
+    <view class="section">
+      <text class="section-title">培训与保障</text>
+      <text class="section-text">{{trainingText}}</text>
+      <text class="section-hint" wx:if="{{project.training && project.training !== true}}">{{project.training}}</text>
+    </view>
+
+    <button class="outline-btn" bindtap="onToggleCertSheet">查看认证信息</button>
+  </scroll-view>
+
+  <view class="actions">
+    <button class="primary" bindtap="onApply">申请参与（演示）</button>
+    <button class="ghost" open-type="contact">联系企业</button>
+  </view>
+
+  <view class="sheet-mask" wx:if="{{showCertSheet}}" bindtap="onToggleCertSheet">
+    <view class="sheet" catchtap="noop">
+      <view class="sheet-head">
+        <text class="sheet-title">认证信息</text>
+        <text class="sheet-sub">{{certInfo.source}}</text>
+      </view>
+      <view class="sheet-row">
+        <text class="sheet-label">企业名称</text>
+        <text class="sheet-value">{{certInfo.name}}</text>
+      </view>
+      <view class="sheet-row">
+        <text class="sheet-label">统一社会信用代码</text>
+        <text class="sheet-value">{{certInfo.credit}}</text>
+      </view>
+      <view class="sheet-row">
+        <text class="sheet-label">成立年限</text>
+        <text class="sheet-value">{{certInfo.years}}</text>
+      </view>
+      <view class="sheet-row">
+        <text class="sheet-label">风险标签</text>
+        <text class="sheet-value">{{certInfo.risk}}</text>
+      </view>
+      <button class="sheet-close" bindtap="onToggleCertSheet">我知道了</button>
+    </view>
+  </view>
+</view>
+
+<view class="empty" wx:else>
+  <text>暂无数据，请返回首页选择项目。</text>
+</view>

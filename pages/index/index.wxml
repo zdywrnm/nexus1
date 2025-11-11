@@ -1,0 +1,33 @@
+<view class="page">
+  <view class="search-bar">
+    <input
+      class="search-input"
+      placeholder="搜索项目 / 公司 / 技能"
+      value="{{keyword}}"
+      bindinput="onInput"
+      confirm-type="search"
+      bindconfirm="onSearch"
+    />
+    <button class="search-btn" bindtap="onSearch">搜索</button>
+  </view>
+  <scroll-view scroll-y class="list">
+    <block wx:if="{{filtered.length}}">
+      <block wx:for="{{filtered}}" wx:key="id">
+        <view class="card" bindtap="onSelect" data-index="{{index}}">
+          <view class="card-header">
+            <text class="title">{{item.title}}</text>
+            <text class="badge" wx:if="{{item.safe}}">已认证</text>
+          </view>
+          <text class="bounty">¥{{item.bounty}}</text>
+          <text class="company">{{item.company}}</text>
+          <view class="skills">
+            <block wx:for="{{item.skills}}" wx:key="*this">
+              <text class="chip">{{item}}</text>
+            </block>
+          </view>
+        </view>
+      </block>
+    </block>
+    <view class="empty" wx:else>暂无匹配项目</view>
+  </scroll-view>
+</view>

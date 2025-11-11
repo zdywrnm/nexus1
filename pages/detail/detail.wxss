@@ -1,0 +1,255 @@
+page {
+  background: #f5f6f7;
+}
+
+.page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding: 0 24rpx;
+  box-sizing: border-box;
+}
+
+.body {
+  flex: 1;
+  min-height: 0;
+  padding: 32rpx 0 240rpx;
+  box-sizing: border-box;
+}
+
+.hero {
+  background: linear-gradient(135deg, #fdfefe 0%, #e8f2ff 85%);
+  border-radius: 28rpx;
+  padding: 32rpx;
+  box-shadow: 0 18rpx 38rpx rgba(22, 119, 255, 0.12);
+  margin-bottom: 32rpx;
+}
+
+.hero-top {
+  display: flex;
+  align-items: flex-start;
+  gap: 16rpx;
+  margin-bottom: 12rpx;
+}
+
+.hero-title {
+  flex: 1;
+  font-size: 38rpx;
+  font-weight: 700;
+  color: #0f1520;
+  line-height: 1.4;
+}
+
+.badge {
+  padding: 6rpx 20rpx;
+  border-radius: 999rpx;
+  background: rgba(22, 119, 255, 0.12);
+  color: #1677ff;
+  font-size: 24rpx;
+}
+
+.hero-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 4rpx;
+  margin-bottom: 12rpx;
+}
+
+.hero-bounty {
+  font-size: 48rpx;
+  color: #1677ff;
+  font-weight: 700;
+}
+
+.hero-label {
+  font-size: 24rpx;
+  color: #4e5969;
+}
+
+.hero-company {
+  display: block;
+  font-size: 28rpx;
+  color: #4e5969;
+  margin-bottom: 20rpx;
+}
+
+.skills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12rpx;
+}
+
+.chip {
+  padding: 6rpx 20rpx;
+  background: #f2f3f5;
+  border-radius: 999rpx;
+  color: #4e5969;
+  font-size: 24rpx;
+}
+
+.section {
+  background: #fff;
+  border-radius: 24rpx;
+  padding: 32rpx;
+  margin-bottom: 24rpx;
+  box-shadow: 0 8rpx 24rpx rgba(15, 21, 32, 0.06);
+}
+
+.section-title {
+  display: block;
+  font-size: 28rpx;
+  color: #1d2129;
+  font-weight: 600;
+  margin-bottom: 12rpx;
+}
+
+.section-text {
+  color: #4e5969;
+  font-size: 28rpx;
+  line-height: 1.7;
+}
+
+.section-hint {
+  display: block;
+  margin-top: 12rpx;
+  color: #a0a8b3;
+  font-size: 24rpx;
+}
+
+.outline-btn {
+  width: 100%;
+  height: 92rpx;
+  line-height: 92rpx;
+  border-radius: 999rpx;
+  border: 1rpx solid #d0d5dd;
+  color: #1677ff;
+  font-size: 30rpx;
+  background: #f7f8fa;
+  margin-top: 12rpx;
+}
+
+.outline-btn::after {
+  display: none;
+}
+
+.actions {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 24rpx 24rpx calc(24rpx + env(safe-area-inset-bottom));
+  background: rgba(255, 255, 255, 0.98);
+  display: flex;
+  gap: 20rpx;
+  box-shadow: 0 -10rpx 30rpx rgba(0, 0, 0, 0.08);
+  backdrop-filter: blur(6rpx);
+}
+
+.actions button {
+  flex: 1;
+  height: 92rpx;
+  line-height: 92rpx;
+  border-radius: 999rpx;
+  font-size: 30rpx;
+}
+
+.actions button::after {
+  display: none;
+}
+
+.primary {
+  background: #1677ff;
+  color: #fff;
+  box-shadow: 0 12rpx 24rpx rgba(22, 119, 255, 0.25);
+}
+
+.ghost {
+  background: #f7f8fa;
+  color: #1d2129;
+  border: 1rpx solid #e5e6eb;
+}
+
+.sheet-mask {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 21, 32, 0.55);
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  padding: 24rpx;
+  box-sizing: border-box;
+}
+
+.sheet {
+  width: 100%;
+  background: #fff;
+  border-radius: 28rpx 28rpx 0 0;
+  padding: 32rpx;
+  box-sizing: border-box;
+  max-height: 75vh;
+}
+
+.sheet-head {
+  margin-bottom: 16rpx;
+}
+
+.sheet-title {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #1d2129;
+}
+
+.sheet-sub {
+  display: block;
+  margin-top: 8rpx;
+  font-size: 24rpx;
+  color: #86909c;
+}
+
+.sheet-row {
+  padding: 16rpx 0;
+  display: flex;
+  justify-content: space-between;
+  border-top: 1rpx solid #f0f0f0;
+}
+
+.sheet-row:first-of-type {
+  border-top: none;
+}
+
+.sheet-label {
+  color: #4e5969;
+  font-size: 26rpx;
+}
+
+.sheet-value {
+  font-size: 26rpx;
+  color: #1d2129;
+  text-align: right;
+}
+
+.sheet-close {
+  margin-top: 24rpx;
+  width: 100%;
+  height: 88rpx;
+  line-height: 88rpx;
+  border-radius: 999rpx;
+  background: #1677ff;
+  color: #fff;
+  font-size: 30rpx;
+}
+
+.sheet-close::after {
+  display: none;
+}
+
+.empty {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #86909c;
+  font-size: 28rpx;
+  padding: 0 40rpx;
+  text-align: center;
+}

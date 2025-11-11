@@ -1,0 +1,21 @@
+<view class="page">
+  <view class="card hero">
+    <text class="hero-title">学生 · 演示账号</text>
+    <text class="hero-sub">近90天活跃 80% · 准时率 100%</text>
+  </view>
+
+  <view class="card">
+    <view class="section-header">我的技能</view>
+    <view class="skills">
+      <text class="chip" wx:for="{{skills}}" wx:key="*this">{{item}}</text>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="section-header">我的履历</view>
+    <view class="resume" wx:for="{{resume}}" wx:key="title">
+      <view class="resume-title">{{item.title}}</view>
+      <view class="resume-score">评分 {{item.score}}</view>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,60 @@
+<view class="page">
+  <scroll-view scroll-y class="body" enable-back-to-top="true">
+    <view class="tip">* 平台会对低于阈值的赏金自动驳回（演示）</view>
+
+    <view class="group">
+      <view class="label">项目标题<text class="required">*</text></view>
+      <input
+        class="input"
+        placeholder="请输入项目标题"
+        value="{{form.title}}"
+        data-field="title"
+        bindinput="onFieldInput"
+        maxlength="40"
+      />
+    </view>
+
+    <view class="group">
+      <view class="label">项目赏金 (¥)<text class="required">*</text></view>
+      <input
+        class="input"
+        placeholder="请输入预算金额"
+        value="{{form.bounty}}"
+        type="number"
+        data-field="bounty"
+        bindinput="onFieldInput"
+      />
+    </view>
+
+    <view class="group">
+      <view class="label">项目类别</view>
+      <picker mode="selector" range="{{categories}}" value="{{form.categoryIndex}}" bindchange="onCategoryChange">
+        <view class="picker">
+          <text>{{form.categoryIndex >= 0 ? categories[form.categoryIndex] : '选择类别'}}</text>
+          <text class="arrow">></text>
+        </view>
+      </picker>
+    </view>
+
+    <view class="group switch-group">
+      <view class="label">提供培训保障</view>
+      <switch checked="{{form.training}}" color="#1677ff" bindchange="onTrainingChange" />
+    </view>
+
+    <view class="group">
+      <view class="label">项目说明</view>
+      <textarea
+        class="textarea"
+        placeholder="请输入 100 字以内的项目说明"
+        value="{{form.desc}}"
+        maxlength="100"
+        data-field="desc"
+        bindinput="onFieldInput"
+        show-confirm-bar="false"
+      ></textarea>
+      <view class="count">{{form.desc.length}}/100</view>
+    </view>
+  </scroll-view>
+
+  <button class="submit" bindtap="onSubmit">提交审核（演示）</button>
+</view>
