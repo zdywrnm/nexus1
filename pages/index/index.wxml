@@ -1,33 +1,152 @@
-<view class="page">
-  <view class="search-bar">
-    <input
-      class="search-input"
-      placeholder="搜索项目 / 公司 / 技能"
-      value="{{keyword}}"
-      bindinput="onInput"
-      confirm-type="search"
-      bindconfirm="onSearch"
-    />
-    <button class="search-btn" bindtap="onSearch">搜索</button>
-  </view>
-  <scroll-view scroll-y class="list">
-    <block wx:if="{{filtered.length}}">
-      <block wx:for="{{filtered}}" wx:key="id">
-        <view class="card" bindtap="onSelect" data-index="{{index}}">
-          <view class="card-header">
-            <text class="title">{{item.title}}</text>
-            <text class="badge" wx:if="{{item.safe}}">已认证</text>
-          </view>
-          <text class="bounty">¥{{item.bounty}}</text>
-          <text class="company">{{item.company}}</text>
-          <view class="skills">
-            <block wx:for="{{item.skills}}" wx:key="*this">
-              <text class="chip">{{item}}</text>
+<view class="home-page">
+  <scroll-view scroll-y class="scroll" enable-back-to-top="true">
+    <view class="banner">
+      <swiper class="swiper" circular autoplay interval="4800">
+        <block wx:for="{{bannerList}}" wx:key="title">
+          <swiper-item>
+            <view class="banner-card">
+              <view class="banner-tag">{{item.tag}}</view>
+              <view class="banner-title">{{item.title}}</view>
+              <view class="banner-desc">{{item.desc}}</view>
+            </view>
+          </swiper-item>
+        </block>
+      </swiper>
+      <view class="notice" wx:for="{{notices}}" wx:key="*this">{{item}}</view>
+    </view>
+
+    <view class="segment">
+      <block wx:for="{{tabs}}" wx:key="key">
+        <view
+          class="segment-item {{activeTab === item.key ? 'active' : ''}}"
+          data-key="{{item.key}}"
+          bindtap="onTabChange"
+        >
+          {{item.label}}
+        </view>
+      </block>
+    </view>
+
+    <view class="filters">
+      <block wx:for="{{filterGroups}}" wx:key="key">
+        <view class="filter-group">
+          <text class="filter-label">{{item.name}}</text>
+          <view class="filter-options">
+            <block wx:for="{{item.options}}" wx:key="value">
+              <text
+                class="chip {{isFilterActive(item.key, option.value) ? 'active' : ''}}"
+                data-group="{{item.key}}"
+                data-value="{{option.value}}"
+                bindtap="onToggleFilter"
+              >
+                {{option.label}}
+              </text>
             </block>
           </view>
         </view>
       </block>
-    </block>
-    <view class="empty" wx:else>暂无匹配项目</view>
+      <view class="filter-footer">
+        <view class="smart-hint">智能推荐基于技能画像更新</view>
+        <text class="reset" bindtap="onResetFilters">重置筛选</text>
+      </view>
+    </view>
+
+    <view class="list">
+      <block wx:if="{{displayList.length}}">
+        <block wx:for="{{displayList}}" wx:key="id">
+          <view class="card" data-index="{{index}}" bindtap="onSelect">
+            <block wx:if="{{activeTab === 'projects'}}">
+              <view class="card-head">
+                <text class="title">{{item.title}}</text>
+                <text class="badge" wx:if="{{item.certified}}">认证发布</text>
+              </view>
+              <view class="meta">
+                <text>{{item.category}} · {{item.difficulty}} · {{item.milestones}} 个里程碑</text>
+              </view>
+              <view class="metrics">
+                <view class="metric">
+                  <text class="metric-label">预算</text>
+                  <text class="metric-value">¥{{item.budget}}</text>
+                </view>
+                <view class="metric">
+                  <text class="metric-label">周期</text>
+                  <text class="metric-value">{{item.timeline}}</text>
+                </view>
+                <view class="metric">
+                  <text class="metric-label">AI 匹配</text>
+                  <text class="metric-value status-success">{{item.match}}%</text>
+                </view>
+              </view>
+              <view class="skills">
+                <text class="chip ghost" wx:for="{{item.skills}}" wx:key="*this" wx:for-item="skill">{{skill}}</text>
+              </view>
+              <view class="footer">
+                <view class="publisher">
+                  <text class="publisher-name">{{item.publisher}}</text>
+                  <text class="publisher-credit">信用 {{item.credit}}</text>
+                </view>
+                <text class="stats">{{item.applicants}} 人报名 · 剩余 {{item.slots}} 名额</text>
+              </view>
+            </block>
+
+            <block wx:elif="{{activeTab === 'jobs'}}">
+              <view class="card-head">
+                <text class="title">{{item.title}}</text>
+                <text class="badge" wx:if="{{item.verified}}">企业认证</text>
+              </view>
+              <view class="meta">{{item.location}} · {{item.mode}} · {{item.type}}</view>
+              <view class="metrics">
+                <view class="metric">
+                  <text class="metric-label">薪资</text>
+                  <text class="metric-value">{{item.salary}}</text>
+                </view>
+                <view class="metric">
+                  <text class="metric-label">福利</text>
+                  <text class="metric-value">{{item.benefits}}</text>
+                </view>
+                <view class="metric">
+                  <text class="metric-label">投递</text>
+                  <text class="metric-value">{{item.applications}} 份</text>
+                </view>
+              </view>
+              <view class="skills">
+                <text class="chip ghost" wx:for="{{item.skills}}" wx:key="*this" wx:for-item="skill">{{skill}}</text>
+              </view>
+            </block>
+
+            <block wx:elif="{{activeTab === 'forum'}}">
+              <view class="card-head">
+                <text class="badge neutral">{{item.category}}</text>
+                <text class="title">{{item.title}}</text>
+              </view>
+              <view class="meta">{{item.summary}}</view>
+              <view class="forum-stats">
+                <text>互动 {{item.interactions}}</text>
+                <text>最后更新 {{item.updated}}</text>
+              </view>
+            </block>
+
+            <block wx:else>
+              <view class="achievement">
+                <image class="cover" src="{{item.cover}}" mode="aspectFill"></image>
+                <view class="achievement-body">
+                  <view class="card-head">
+                    <text class="title">{{item.title}}</text>
+                    <text class="badge" wx:if="{{item.award}}">{{item.award}}</text>
+                  </view>
+                  <view class="meta">{{item.tags.join(' · ')}}</view>
+                  <view class="achievement-footer">
+                    <text>评分 {{item.rating}}</text>
+                    <text>引用 {{item.citations}} 次</text>
+                  </view>
+                </view>
+              </view>
+            </block>
+          </view>
+        </block>
+      </block>
+      <view class="empty" wx:else>暂无符合条件的内容，尝试调整筛选。</view>
+    </view>
   </scroll-view>
+  <fab />
 </view>

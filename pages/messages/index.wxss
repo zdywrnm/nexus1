@@ -1,0 +1,142 @@
+.messages-page {
+  min-height: 100vh;
+  padding-bottom: 160rpx;
+}
+
+.scroll {
+  height: calc(100vh - 120rpx);
+}
+
+.header {
+  padding: 32rpx;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  gap: 12rpx;
+  box-shadow: 0 12rpx 24rpx rgba(15, 32, 67, 0.05);
+}
+
+.title {
+  font-size: 36rpx;
+  font-weight: 600;
+}
+
+.subtitle {
+  font-size: 24rpx;
+  color: #4e5969;
+}
+
+.tabs {
+  display: flex;
+  gap: 16rpx;
+  margin: 24rpx 32rpx 0;
+}
+
+.tab {
+  padding: 14rpx 24rpx;
+  border-radius: 999rpx;
+  background: #f2f3f5;
+  color: #4e5969;
+  font-size: 26rpx;
+}
+
+.tab.active {
+  background: #1677ff;
+  color: #fff;
+  font-weight: 600;
+}
+
+.smart-summary {
+  margin: 24rpx 32rpx 0;
+  background: #fff;
+  border-radius: 24rpx;
+  padding: 24rpx;
+  box-shadow: 0 12rpx 36rpx rgba(15, 32, 67, 0.08);
+}
+
+.summary-head {
+  font-size: 28rpx;
+  font-weight: 600;
+  margin-bottom: 16rpx;
+}
+
+.summary-body {
+  display: flex;
+  flex-direction: column;
+  gap: 16rpx;
+}
+
+.digest-item {
+  background: #f7f8fa;
+  border-radius: 20rpx;
+  padding: 16rpx;
+  display: flex;
+  flex-direction: column;
+  gap: 8rpx;
+}
+
+.digest-title {
+  font-size: 26rpx;
+  font-weight: 500;
+  color: #1f2329;
+}
+
+.digest-content {
+  font-size: 24rpx;
+  color: #4e5969;
+}
+
+.message-list {
+  margin: 24rpx 32rpx 96rpx;
+  display: flex;
+  flex-direction: column;
+  gap: 24rpx;
+}
+
+.message-card {
+  background: #fff;
+  border-radius: 24rpx;
+  padding: 24rpx;
+  box-shadow: 0 16rpx 48rpx rgba(15, 32, 67, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 12rpx;
+}
+
+.message-card.alert {
+  border-left: 8rpx solid #ff8f1f;
+}
+
+.message-card.risk {
+  border-left: 8rpx solid #ff4d4f;
+}
+
+.message-head {
+  display: flex;
+  justify-content: space-between;
+  color: #86909c;
+  font-size: 22rpx;
+}
+
+.message-title {
+  font-size: 28rpx;
+  font-weight: 600;
+}
+
+.message-content {
+  font-size: 24rpx;
+  color: #4e5969;
+}
+
+.message-actions {
+  display: flex;
+  gap: 16rpx;
+  color: #1677ff;
+  font-size: 24rpx;
+}
+
+.action {
+  padding: 8rpx 16rpx;
+  background: rgba(22, 119, 255, 0.12);
+  border-radius: 12rpx;
+}

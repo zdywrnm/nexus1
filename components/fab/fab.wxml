@@ -1,0 +1,4 @@
+<view class="fab" bindtap="onTap">
+  <view class="fab-icon">+</view>
+  <view class="fab-text">创建</view>
+</view>

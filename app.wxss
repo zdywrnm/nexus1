@@ -1,10 +1,41 @@
-/**app.wxss**/
-.container {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
+page {
+  background-color: #f6f8fa;
+  font-family: "PingFang SC", "Helvetica Neue", Arial, sans-serif;
+  color: #1f2329;
+}
+
+text {
+  line-height: 1.6;
+}
+
+button::after {
+  border: none;
+}
+
+.section-title {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #1f2329;
+}
+
+.badge {
+  display: inline-flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 200rpx 0;
-  box-sizing: border-box;
-} 
+  background-color: #f0f5ff;
+  color: #1677ff;
+  font-size: 22rpx;
+  border-radius: 999rpx;
+  padding: 4rpx 16rpx;
+}
+
+.status-success {
+  color: #15b374;
+}
+
+.status-warning {
+  color: #ff8f1f;
+}
+
+.status-danger {
+  color: #ff4d4f;
+}
