@@ -1,0 +1,109 @@
+.forum-page {
+  min-height: 100vh;
+  background: #f6f8fa;
+  padding-bottom: 160rpx;
+}
+
+.search-bar {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+  margin: 32rpx;
+  padding: 16rpx 24rpx;
+  background: #fff;
+  border-radius: 999rpx;
+  box-shadow: 0 12rpx 36rpx rgba(15, 32, 67, 0.08);
+}
+
+.search-input {
+  flex: 1;
+  font-size: 26rpx;
+  color: #1f2329;
+}
+
+.clear {
+  font-size: 24rpx;
+  color: #1677ff;
+}
+
+.type-chips {
+  display: flex;
+  gap: 16rpx;
+  margin: 0 32rpx 24rpx;
+}
+
+.chip {
+  padding: 12rpx 24rpx;
+  border-radius: 999rpx;
+  background: #f2f3f5;
+  font-size: 24rpx;
+  color: #4e5969;
+}
+
+.chip.active {
+  background: #1677ff;
+  color: #fff;
+  font-weight: 600;
+}
+
+.post-list {
+  display: flex;
+  flex-direction: column;
+  gap: 24rpx;
+  margin: 0 32rpx 80rpx;
+}
+
+.post-card {
+  background: #fff;
+  border-radius: 24rpx;
+  padding: 28rpx;
+  box-shadow: 0 12rpx 36rpx rgba(15, 32, 67, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 16rpx;
+}
+
+.card-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.badge {
+  padding: 6rpx 18rpx;
+  border-radius: 999rpx;
+  background: rgba(22, 119, 255, 0.12);
+  color: #1677ff;
+  font-size: 22rpx;
+}
+
+.certified {
+  font-size: 22rpx;
+  color: #22a06b;
+}
+
+.title {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #1f2329;
+}
+
+.summary {
+  font-size: 24rpx;
+  color: #4e5969;
+  line-height: 1.6;
+}
+
+.meta {
+  font-size: 22rpx;
+  color: #86909c;
+  display: flex;
+  gap: 8rpx;
+}
+
+.empty {
+  text-align: center;
+  font-size: 24rpx;
+  color: #86909c;
+  padding: 80rpx 0;
+}

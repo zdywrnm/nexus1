@@ -28,7 +28,7 @@
 
 .quick-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 16rpx;
 }
 
@@ -39,6 +39,10 @@
   display: flex;
   flex-direction: column;
   gap: 12rpx;
+}
+
+.quick-item.active {
+  background: rgba(255, 255, 255, 0.28);
 }
 
 .quick-title {
@@ -92,6 +96,12 @@
 
 .form {
   margin: 24rpx 32rpx 0;
+  display: flex;
+  flex-direction: column;
+  gap: 24rpx;
+}
+
+.section {
   background: #fff;
   border-radius: 24rpx;
   padding: 24rpx;
@@ -101,19 +111,16 @@
   gap: 24rpx;
 }
 
+.section-title {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #1f2329;
+}
+
 .group {
   display: flex;
   flex-direction: column;
   gap: 12rpx;
-}
-
-.inline {
-  display: flex;
-  gap: 16rpx;
-}
-
-.inline .group {
-  flex: 1;
 }
 
 .label {
@@ -137,28 +144,38 @@
 }
 
 .textarea {
-  min-height: 160rpx;
+  min-height: 180rpx;
 }
 
-.picker {
-  background: #f7f8fa;
-  border-radius: 16rpx;
-  padding: 20rpx;
+.chips {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 26rpx;
+  flex-wrap: wrap;
+  gap: 16rpx;
+}
+
+.chip {
+  padding: 12rpx 24rpx;
+  border-radius: 999rpx;
+  background: #f2f3f5;
   color: #4e5969;
+  font-size: 24rpx;
 }
 
-.arrow {
-  color: #86909c;
+.chip.active {
+  background: #1677ff;
+  color: #fff;
+  font-weight: 600;
 }
 
-.switch {
-  flex-direction: row;
-  justify-content: space-between;
+.custom-range {
+  display: flex;
   align-items: center;
+  gap: 12rpx;
+}
+
+.divider {
+  color: #4e5969;
+  font-size: 26rpx;
 }
 
 .submit {

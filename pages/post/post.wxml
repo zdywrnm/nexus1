@@ -2,10 +2,10 @@
   <scroll-view scroll-y class="scroll">
     <view class="hero">
       <view class="hero-title">Create Hub</view>
-      <view class="hero-desc">一键发项目 / 岗位 / 帖子 / 成果，AI 规范建议随时辅助</view>
+      <view class="hero-desc">快速发布项目、岗位或帖子，规范提示实时辅助</view>
       <view class="quick-grid">
         <view
-          class="quick-item"
+          class="quick-item {{activeType === item.key ? 'active' : ''}}"
           wx:for="{{tabs}}"
           wx:key="key"
           data-key="{{item.key}}"
@@ -36,134 +36,498 @@
 
     <view class="form">
       <block wx:if="{{activeType === 'project'}}">
-        <view class="group">
-          <text class="label">项目标题<text class="required">*</text></text>
-          <input class="input" placeholder="请输入项目标题" data-path="project.title" value="{{formData.project.title}}" bindinput="onInput" />
-        </view>
-        <view class="group">
-          <text class="label">项目类别</text>
-          <picker mode="selector" range="{{categoryOptions}}" value="{{formData.project.categoryIndex}}" data-path="project.categoryIndex" bindchange="onPicker">
-            <view class="picker">
-              <text>{{formData.project.categoryIndex >= 0 ? categoryOptions[formData.project.categoryIndex] : '选择类别'}}</text>
-              <text class="arrow">></text>
-            </view>
-          </picker>
-        </view>
-        <view class="inline">
+        <view class="section">
+          <view class="section-title">基础信息</view>
           <view class="group">
-            <text class="label">预算 (¥)<text class="required">*</text></text>
-            <input class="input" type="number" placeholder="请输入预算" data-path="project.budget" value="{{formData.project.budget}}" bindinput="onInput" />
+            <text class="label">项目名称<text class="required">*</text></text>
+            <input
+              class="input"
+              placeholder="请输入项目名称"
+              data-path="formData.projectForm.项目名称"
+              value="{{formData.projectForm.项目名称}}"
+              bindinput="onInput"
+            />
           </view>
           <view class="group">
-            <text class="label">周期 (周)</text>
-            <input class="input" type="number" placeholder="预计周期" data-path="project.duration" value="{{formData.project.duration}}" bindinput="onInput" />
+            <text class="label">项目简介<text class="required">*</text></text>
+            <textarea
+              class="textarea"
+              placeholder="一句话概述项目亮点"
+              data-path="formData.projectForm.项目简介"
+              value="{{formData.projectForm.项目简介}}"
+              bindinput="onInput"
+            ></textarea>
+          </view>
+          <view class="group">
+            <text class="label">详细说明<text class="required">*</text></text>
+            <textarea
+              class="textarea"
+              placeholder="列出里程碑、交付标准与合作方式"
+              data-path="formData.projectForm.详细说明"
+              value="{{formData.projectForm.详细说明}}"
+              bindinput="onInput"
+            ></textarea>
           </view>
         </view>
-        <view class="group">
-          <text class="label">难度等级</text>
-          <picker mode="selector" range="{{difficultyOptions}}" value="{{formData.project.difficultyIndex}}" data-path="project.difficultyIndex" bindchange="onPicker">
-            <view class="picker">
-              <text>{{difficultyOptions[formData.project.difficultyIndex] || '选择难度'}}</text>
-              <text class="arrow">></text>
+
+        <view class="section">
+          <view class="section-title">项目标签</view>
+          <view class="group">
+            <text class="label">项目类型（多选）</text>
+            <view class="chips">
+              <text
+                wx:for="{{projectTagOptions.项目类型}}"
+                wx:key="*this"
+                class="chip {{projectTags.项目类型.indexOf(item) > -1 ? 'active' : ''}}"
+                data-field="项目类型"
+                data-value="{{item}}"
+                bindtap="onToggleProjectMulti"
+              >
+                {{item}}
+              </text>
             </view>
-          </picker>
-        </view>
-        <view class="group">
-          <text class="label">交付与验收标准</text>
-          <textarea class="textarea" placeholder="例如：拆解里程碑、明确评分维度" data-path="project.acceptance" value="{{formData.project.acceptance}}" bindinput="onInput"></textarea>
-        </view>
-        <view class="group switch">
-          <text class="label">托管支付</text>
-          <switch checked="{{formData.project.escrow}}" data-path="project.escrow" bindchange="onSwitch" color="#1677ff" />
-        </view>
-        <view class="group">
-          <text class="label">导师/培训说明</text>
-          <textarea class="textarea" placeholder="如需企业导师，说明频次与形式" data-path="project.training" value="{{formData.project.training}}" bindinput="onInput"></textarea>
+          </view>
+          <view class="group">
+            <text class="label">工作方式（单选）</text>
+            <view class="chips">
+              <text
+                wx:for="{{projectTagOptions.工作方式}}"
+                wx:key="*this"
+                class="chip {{projectTags.工作方式 === item ? 'active' : ''}}"
+                data-field="工作方式"
+                data-value="{{item}}"
+                bindtap="onSelectProjectSingle"
+              >
+                {{item}}
+              </text>
+            </view>
+          </view>
+          <view class="group" wx:if="{{projectTags.工作方式 === '线下' || projectTags.工作方式 === '混合'}}">
+            <text class="label">工作城市（必填）</text>
+            <view class="chips">
+              <text
+                wx:for="{{projectTagOptions.工作城市}}"
+                wx:key="*this"
+                class="chip {{projectTags.工作城市 === item ? 'active' : ''}}"
+                data-value="{{item}}"
+                bindtap="onSelectProjectCity"
+              >
+                {{item}}
+              </text>
+            </view>
+          </view>
+          <view class="group">
+            <text class="label">开始时间</text>
+            <view class="chips">
+              <text
+                wx:for="{{projectTagOptions.开始时间}}"
+                wx:key="*this"
+                class="chip {{projectTags.开始时间 === item ? 'active' : ''}}"
+                data-field="开始时间"
+                data-value="{{item}}"
+                bindtap="onSelectProjectSingle"
+              >
+                {{item}}
+              </text>
+            </view>
+          </view>
+          <view class="group">
+            <text class="label">项目时长</text>
+            <view class="chips">
+              <text
+                wx:for="{{projectTagOptions.项目时长}}"
+                wx:key="*this"
+                class="chip {{projectTags.项目时长 === item ? 'active' : ''}}"
+                data-field="项目时长"
+                data-value="{{item}}"
+                bindtap="onSelectProjectSingle"
+              >
+                {{item}}
+              </text>
+            </view>
+          </view>
+          <view class="group">
+            <text class="label">每天工作时长</text>
+            <view class="chips">
+              <text
+                wx:for="{{projectTagOptions.每天工作时长}}"
+                wx:key="*this"
+                class="chip {{projectTags.每天工作时长 === item ? 'active' : ''}}"
+                data-field="每天工作时长"
+                data-value="{{item}}"
+                bindtap="onSelectProjectSingle"
+              >
+                {{item}}
+              </text>
+            </view>
+            <input
+              wx:if="{{projectTags.每天工作时长 === '自定义'}}"
+              class="input"
+              type="number"
+              placeholder="请输入小时数"
+              value="{{projectCustom.自定义每天工作时长}}"
+              bindinput="onProjectCustomInput"
+            />
+          </view>
+          <view class="group">
+            <text class="label">每周参与天数</text>
+            <view class="chips">
+              <text
+                wx:for="{{projectTagOptions.每周参与天数}}"
+                wx:key="*this"
+                class="chip {{projectTags.每周参与天数 === item ? 'active' : ''}}"
+                data-field="每周参与天数"
+                data-value="{{item}}"
+                bindtap="onSelectProjectSingle"
+              >
+                {{item}}
+              </text>
+            </view>
+          </view>
+          <view class="group">
+            <text class="label">结算方式</text>
+            <view class="chips">
+              <text
+                wx:for="{{projectTagOptions.结算方式}}"
+                wx:key="*this"
+                class="chip {{projectTags.结算方式 === item ? 'active' : ''}}"
+                data-field="结算方式"
+                data-value="{{item}}"
+                bindtap="onSelectProjectSingle"
+              >
+                {{item}}
+              </text>
+            </view>
+          </view>
+          <view class="group" wx:if="{{projectTags.结算方式 === '日薪'}}">
+            <text class="label">日薪区间</text>
+            <view class="chips">
+              <text
+                wx:for="{{projectTagOptions.日薪区间}}"
+                wx:key="*this"
+                class="chip {{projectTags.日薪区间 === item ? 'active' : ''}}"
+                data-field="日薪区间"
+                data-value="{{item}}"
+                bindtap="onSelectProjectSingle"
+              >
+                {{item}}
+              </text>
+            </view>
+          </view>
+          <view class="group" wx:if="{{projectTags.结算方式 === '阶段性薪水' || projectTags.结算方式 === '完成后一次性'}}">
+            <text class="label">总额区间</text>
+            <view class="chips">
+              <text
+                wx:for="{{projectTagOptions.总额区间}}"
+                wx:key="*this"
+                class="chip {{projectTags.总额区间 === item ? 'active' : ''}}"
+                data-field="总额区间"
+                data-value="{{item}}"
+                bindtap="onSelectProjectSingle"
+              >
+                {{item}}
+              </text>
+            </view>
+          </view>
+          <view class="group">
+            <text class="label">学历要求</text>
+            <view class="chips">
+              <text
+                wx:for="{{projectTagOptions.学历要求}}"
+                wx:key="*this"
+                class="chip {{projectTags.学历要求 === item ? 'active' : ''}}"
+                data-field="学历要求"
+                data-value="{{item}}"
+                bindtap="onSelectProjectSingle"
+              >
+                {{item}}
+              </text>
+            </view>
+          </view>
+          <view class="group">
+            <text class="label">接受年级（可多选）</text>
+            <view class="chips">
+              <text
+                wx:for="{{projectTagOptions.接受年级}}"
+                wx:key="*this"
+                class="chip {{projectTags.接受年级.indexOf(item) > -1 ? 'active' : ''}}"
+                data-field="接受年级"
+                data-value="{{item}}"
+                bindtap="onToggleProjectMulti"
+              >
+                {{item}}
+              </text>
+            </view>
+          </view>
+          <view class="group">
+            <text class="label">培训支持</text>
+            <view class="chips">
+              <text
+                wx:for="{{projectTagOptions.培训支持}}"
+                wx:key="*this"
+                class="chip {{projectTags.培训支持 === item ? 'active' : ''}}"
+                data-field="培训支持"
+                data-value="{{item}}"
+                bindtap="onSelectProjectSingle"
+              >
+                {{item}}
+              </text>
+            </view>
+          </view>
+          <view class="group">
+            <text class="label">福利待遇（多选）</text>
+            <view class="chips">
+              <text
+                wx:for="{{projectTagOptions.福利待遇}}"
+                wx:key="*this"
+                class="chip {{projectTags.福利待遇.indexOf(item) > -1 ? 'active' : ''}}"
+                data-field="福利待遇"
+                data-value="{{item}}"
+                bindtap="onToggleProjectMulti"
+              >
+                {{item}}
+              </text>
+            </view>
+          </view>
         </view>
       </block>
 
       <block wx:elif="{{activeType === 'job'}}">
-        <view class="group">
-          <text class="label">岗位名称<text class="required">*</text></text>
-          <input class="input" placeholder="请输入岗位名称" data-path="job.title" value="{{formData.job.title}}" bindinput="onInput" />
+        <view class="section">
+          <view class="section-title">基础信息</view>
+          <view class="group">
+            <text class="label">岗位名称<text class="required">*</text></text>
+            <input
+              class="input"
+              placeholder="请输入岗位名称"
+              data-path="formData.jobForm.岗位名称"
+              value="{{formData.jobForm.岗位名称}}"
+              bindinput="onInput"
+            />
+          </view>
+          <view class="group">
+            <text class="label">岗位简介<text class="required">*</text></text>
+            <textarea
+              class="textarea"
+              placeholder="概述岗位职责与亮点"
+              data-path="formData.jobForm.岗位简介"
+              value="{{formData.jobForm.岗位简介}}"
+              bindinput="onInput"
+            ></textarea>
+          </view>
+          <view class="group">
+            <text class="label">岗位要求</text>
+            <textarea
+              class="textarea"
+              placeholder="列出技能、经验与加分项"
+              data-path="formData.jobForm.岗位要求"
+              value="{{formData.jobForm.岗位要求}}"
+              bindinput="onInput"
+            ></textarea>
+          </view>
         </view>
-        <view class="group">
-          <text class="label">岗位类型</text>
-          <picker mode="selector" range="{{jobTypeOptions}}" value="{{formData.job.typeIndex}}" data-path="job.typeIndex" bindchange="onPicker">
-            <view class="picker">
-              <text>{{jobTypeOptions[formData.job.typeIndex] || '选择类型'}}</text>
-              <text class="arrow">></text>
+
+        <view class="section">
+          <view class="section-title">岗位标签</view>
+          <view class="group">
+            <text class="label">学历要求</text>
+            <view class="chips">
+              <text
+                wx:for="{{jobTagOptions.学历要求}}"
+                wx:key="*this"
+                class="chip {{jobTags.学历要求 === item ? 'active' : ''}}"
+                data-field="学历要求"
+                data-value="{{item}}"
+                bindtap="onSelectJobSingle"
+              >
+                {{item}}
+              </text>
             </view>
-          </picker>
-        </view>
-        <view class="inline">
-          <view class="group">
-            <text class="label">薪资区间 (¥)</text>
-            <input class="input" placeholder="如 8k-12k/月" data-path="job.salary" value="{{formData.job.salary}}" bindinput="onInput" />
           </view>
           <view class="group">
-            <text class="label">工作地点</text>
-            <input class="input" placeholder="城市/远程" data-path="job.location" value="{{formData.job.location}}" bindinput="onInput" />
+            <text class="label">福利待遇（多选）</text>
+            <view class="chips">
+              <text
+                wx:for="{{jobTagOptions.福利待遇}}"
+                wx:key="*this"
+                class="chip {{jobTags.福利待遇.indexOf(item) > -1 ? 'active' : ''}}"
+                data-field="福利待遇"
+                data-value="{{item}}"
+                bindtap="onToggleJobMulti"
+              >
+                {{item}}
+              </text>
+            </view>
           </view>
-        </view>
-        <view class="group">
-          <text class="label">岗位职责</text>
-          <textarea class="textarea" placeholder="列出 3-5 条核心职责" data-path="job.responsibilities" value="{{formData.job.responsibilities}}" bindinput="onInput"></textarea>
-        </view>
-        <view class="group">
-          <text class="label">任职要求</text>
-          <textarea class="textarea" placeholder="技能、经验、加分项" data-path="job.requirements" value="{{formData.job.requirements}}" bindinput="onInput"></textarea>
-        </view>
-        <view class="group">
-          <text class="label">面试流程</text>
-          <input class="input" placeholder="如 简历筛选-笔试-面试-Offer" data-path="job.process" value="{{formData.job.process}}" bindinput="onInput" />
+          <view class="group">
+            <text class="label">薪资待遇</text>
+            <view class="chips">
+              <text
+                wx:for="{{jobTagOptions.薪资待遇}}"
+                wx:key="*this"
+                class="chip {{jobTags.薪资待遇 === item ? 'active' : ''}}"
+                data-field="薪资待遇"
+                data-value="{{item}}"
+                bindtap="onSelectJobSingle"
+              >
+                {{item}}
+              </text>
+            </view>
+            <view class="custom-range" wx:if="{{jobTags.薪资待遇 === '自定义薪资'}}">
+              <input
+                class="input"
+                type="number"
+                placeholder="最低 (K)"
+                data-field="自定义最低薪资"
+                value="{{jobCustom.自定义最低薪资}}"
+                bindinput="onJobCustomInput"
+              />
+              <text class="divider">-</text>
+              <input
+                class="input"
+                type="number"
+                placeholder="最高 (K)"
+                data-field="自定义最高薪资"
+                value="{{jobCustom.自定义最高薪资}}"
+                bindinput="onJobCustomInput"
+              />
+            </view>
+          </view>
+          <view class="group">
+            <text class="label">经验要求</text>
+            <view class="chips">
+              <text
+                wx:for="{{jobTagOptions.经验要求}}"
+                wx:key="*this"
+                class="chip {{jobTags.经验要求 === item ? 'active' : ''}}"
+                data-field="经验要求"
+                data-value="{{item}}"
+                bindtap="onSelectJobSingle"
+              >
+                {{item}}
+              </text>
+            </view>
+          </view>
+          <view class="group">
+            <text class="label">公司规模</text>
+            <view class="chips">
+              <text
+                wx:for="{{jobTagOptions.公司规模}}"
+                wx:key="*this"
+                class="chip {{jobTags.公司规模 === item ? 'active' : ''}}"
+                data-field="公司规模"
+                data-value="{{item}}"
+                bindtap="onSelectJobSingle"
+              >
+                {{item}}
+              </text>
+            </view>
+          </view>
+          <view class="group">
+            <text class="label">BOSS活跃状态</text>
+            <view class="chips">
+              <text
+                wx:for="{{jobTagOptions.BOSS活跃状态}}"
+                wx:key="*this"
+                class="chip {{jobTags.BOSS活跃状态 === item ? 'active' : ''}}"
+                data-field="BOSS活跃状态"
+                data-value="{{item}}"
+                bindtap="onSelectJobSingle"
+              >
+                {{item}}
+              </text>
+            </view>
+          </view>
+          <view class="group">
+            <text class="label">融资阶段</text>
+            <view class="chips">
+              <text
+                wx:for="{{jobTagOptions.融资阶段}}"
+                wx:key="*this"
+                class="chip {{jobTags.融资阶段 === item ? 'active' : ''}}"
+                data-field="融资阶段"
+                data-value="{{item}}"
+                bindtap="onSelectJobSingle"
+              >
+                {{item}}
+              </text>
+            </view>
+          </view>
+          <view class="group">
+            <text class="label">所属行业（最多 3 项）</text>
+            <view class="chips">
+              <text
+                wx:for="{{jobTagOptions.所属行业}}"
+                wx:key="*this"
+                class="chip {{jobTags.所属行业.indexOf(item) > -1 ? 'active' : ''}}"
+                data-field="所属行业"
+                data-value="{{item}}"
+                bindtap="onToggleJobMulti"
+              >
+                {{item}}
+              </text>
+            </view>
+          </view>
         </view>
       </block>
 
       <block wx:elif="{{activeType === 'forum'}}">
-        <view class="group">
-          <text class="label">帖子类型</text>
-          <picker mode="selector" range="{{forumTypeOptions}}" value="{{formData.forum.typeIndex}}" data-path="forum.typeIndex" bindchange="onPicker">
-            <view class="picker">
-              <text>{{forumTypeOptions[formData.forum.typeIndex] || '选择类型'}}</text>
-              <text class="arrow">></text>
+        <view class="section">
+          <view class="section-title">帖子信息</view>
+          <view class="group">
+            <text class="label">帖子类型</text>
+            <view class="chips">
+              <text
+                wx:for="{{forumTypeOptions}}"
+                wx:key="*this"
+                class="chip {{formData.forumForm.帖子类型 === item ? 'active' : ''}}"
+                data-value="{{item}}"
+                bindtap="onSelectForumType"
+              >
+                {{item}}
+              </text>
             </view>
-          </picker>
-        </view>
-        <view class="group">
-          <text class="label">主题<text class="required">*</text></text>
-          <input class="input" placeholder="一句话概括主题" data-path="forum.title" value="{{formData.forum.title}}" bindinput="onInput" />
-        </view>
-        <view class="group">
-          <text class="label">正文</text>
-          <textarea class="textarea" placeholder="结构化描述背景、问题与诉求" data-path="forum.content" value="{{formData.forum.content}}" bindinput="onInput"></textarea>
-        </view>
-        <view class="group">
-          <text class="label">标签</text>
-          <input class="input" placeholder="用逗号分隔多个标签" data-path="forum.tags" value="{{formData.forum.tags}}" bindinput="onInput" />
-        </view>
-      </block>
-
-      <block wx:else>
-        <view class="group">
-          <text class="label">成果名称<text class="required">*</text></text>
-          <input class="input" placeholder="请输入成果名称" data-path="result.title" value="{{formData.result.title}}" bindinput="onInput" />
-        </view>
-        <view class="group">
-          <text class="label">作品链接</text>
-          <input class="input" placeholder="可填写作品链接或附件说明" data-path="result.link" value="{{formData.result.link}}" bindinput="onInput" />
-        </view>
-        <view class="group">
-          <text class="label">成果简介</text>
-          <textarea class="textarea" placeholder="介绍角色、贡献与亮点" data-path="result.summary" value="{{formData.result.summary}}" bindinput="onInput"></textarea>
-        </view>
-        <view class="group">
-          <text class="label">关联项目</text>
-          <input class="input" placeholder="选择关联的项目或岗位" data-path="result.related" value="{{formData.result.related}}" bindinput="onInput" />
-        </view>
-        <view class="group">
-          <text class="label">认证/奖项</text>
-          <input class="input" placeholder="如 校企认证、公益表彰" data-path="result.awards" value="{{formData.result.awards}}" bindinput="onInput" />
+          </view>
+          <view class="group">
+            <text class="label">标题<text class="required">*</text></text>
+            <input
+              class="input"
+              placeholder="一句话概括主题"
+              data-path="formData.forumForm.标题"
+              value="{{formData.forumForm.标题}}"
+              bindinput="onInput"
+            />
+          </view>
+          <view class="group">
+            <text class="label">正文<text class="required">*</text></text>
+            <textarea
+              class="textarea"
+              placeholder="介绍背景、问题与诉求"
+              data-path="formData.forumForm.正文"
+              value="{{formData.forumForm.正文}}"
+              bindinput="onInput"
+            ></textarea>
+          </view>
+          <view class="group">
+            <text class="label">关联项目ID</text>
+            <input
+              class="input"
+              placeholder="可填关联项目编号"
+              data-path="formData.forumForm.关联项目ID"
+              value="{{formData.forumForm.关联项目ID}}"
+              bindinput="onInput"
+            />
+          </view>
+          <view class="group">
+            <text class="label">关联岗位ID</text>
+            <input
+              class="input"
+              placeholder="可填关联岗位编号"
+              data-path="formData.forumForm.关联岗位ID"
+              value="{{formData.forumForm.关联岗位ID}}"
+              bindinput="onInput"
+            />
+          </view>
         </view>
       </block>
     </view>
