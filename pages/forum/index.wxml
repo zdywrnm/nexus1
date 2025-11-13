@@ -1,0 +1,45 @@
+<view class="forum-page">
+  <view class="search-bar">
+    <input
+      class="search-input"
+      type="text"
+      placeholder="搜索帖子标题或正文"
+      value="{{query}}"
+      bindinput="onSearchInput"
+      confirm-type="search"
+    />
+    <text class="clear" wx:if="{{query}}" bindtap="onClearSearch">清除</text>
+  </view>
+
+  <view class="type-chips">
+    <text
+      wx:for="{{tabs}}"
+      wx:key="value"
+      class="chip {{activeType === item.value ? 'active' : ''}}"
+      data-value="{{item.value}}"
+      bindtap="onTypeChange"
+    >
+      {{item.label}}
+    </text>
+  </view>
+
+  <view class="post-list">
+    <block wx:for="{{displayList}}" wx:key="id">
+      <view class="post-card">
+        <view class="card-head">
+          <text class="badge">{{item.帖子类型}}</text>
+          <text class="certified" wx:if="{{item.认证企业}}">认证企业</text>
+        </view>
+        <view class="title">{{item.标题}}</view>
+        <view class="summary">{{item.摘要}}</view>
+        <view class="meta">
+          <text>{{item.作者}}</text>
+          <text>·</text>
+          <text>{{item.更新时间}}</text>
+        </view>
+      </view>
+    </block>
+    <view class="empty" wx:if="{{!displayList.length}}">暂无相关帖子</view>
+  </view>
+  <fab />
+</view>

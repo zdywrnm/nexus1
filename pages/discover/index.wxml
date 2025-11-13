@@ -1,87 +1,546 @@
 <view class="discover-page">
   <scroll-view scroll-y class="scroll">
-    <view class="filter-panel">
-      <view class="panel-title">高级检索</view>
-      <view class="panel-sub">行业、技能、预算、校企标签一站筛选，可保存组合</view>
-
-      <block wx:for="{{filters}}" wx:key="key">
-        <view class="filter-group">
-          <view class="group-head">
-            <text class="group-name">{{item.name}}</text>
-            <text class="group-tip">{{item.tip}}</text>
-          </view>
-          <view class="group-options">
-            <text
-              wx:for="{{item.options}}"
-              wx:for-item="option"
-              wx:key="value"
-              class="chip {{isSelected(item.key, option.value) ? 'active' : ''}}"
-              data-group="{{item.key}}"
-              data-value="{{option.value}}"
-              bindtap="onToggle"
-            >
-              {{option.label}}
-            </text>
-          </view>
-        </view>
-      </block>
-
-      <view class="panel-actions">
-        <button class="ghost" bindtap="onSave">保存筛选</button>
-        <button class="ghost" bindtap="onSmart">智能推荐</button>
-        <text class="clear" bindtap="onReset">清空</text>
-      </view>
-
-      <view class="panel-meta">
-        <view class="meta-item">
-          <text class="meta-title">历史偏好</text>
-          <text class="meta-desc">{{historyHint}}</text>
-        </view>
-        <view class="meta-item">
-          <text class="meta-title">协作方式</text>
-          <text class="meta-desc">当前包含个人与团队项目</text>
-        </view>
-        <view class="meta-item">
-          <text class="meta-title">地图视图</text>
-          <view class="switch">
-            <switch checked="{{mapMode}}" bindchange="onToggleMap" color="#1677ff" />
-            <text>{{mapMode ? '已显示同城任务' : '切换查看同城任务'}}</text>
-          </view>
-        </view>
-      </view>
+    <view class="intro">
+      <view class="intro-title">智能检索</view>
+      <view class="intro-desc">{{historyHint}}</view>
     </view>
 
-    <view class="result-tabs">
+    <view class="category-tabs">
       <text
-        wx:for="{{categories}}"
-        wx:for-item="tab"
-        wx:key="key"
-        class="tab {{activeCategory === tab.key ? 'active' : ''}}"
-        data-key="{{tab.key}}"
-        bindtap="onCategoryChange"
+        class="tab {{activeCategory === 'project' ? 'active' : ''}}"
+        data-key="project"
+        bindtap="onSwitchCategory"
       >
-        {{tab.label}} ({{counts[tab.key]}})
+        项目
+      </text>
+      <text
+        class="tab {{activeCategory === 'job' ? 'active' : ''}}"
+        data-key="job"
+        bindtap="onSwitchCategory"
+      >
+        岗位
       </text>
     </view>
 
-    <view class="results">
-      <block wx:for="{{items}}" wx:key="id">
-        <view class="result-card">
-          <view class="result-head">
-            <text class="result-title">{{item.title}}</text>
-            <text class="badge" wx:if="{{item.certified}}">已认证</text>
+    <block wx:if="{{activeCategory === 'project'}}">
+      <view class="section">
+        <view class="section-title">类型与方式</view>
+        <view class="field">
+          <view class="field-head">
+            <text>项目类型</text>
+            <text class="hint">多选</text>
           </view>
-          <view class="result-meta">{{item.meta}}</view>
-          <view class="result-tags">
-            <text wx:for="{{item.tags}}" wx:for-item="tag" wx:key="*this" class="tag">{{tag}}</text>
-          </view>
-          <view class="result-footer">
-            <text>{{item.highlight}}</text>
-            <text class="cta">查看详情</text>
+          <view class="chips">
+            <text
+              wx:for="{{projectOptions.项目类型}}"
+              wx:key="*this"
+              class="chip {{projectFilters.项目类型.indexOf(item) > -1 ? 'active' : ''}}"
+              data-field="项目类型"
+              data-value="{{item}}"
+              bindtap="onToggleProjectMulti"
+            >
+              {{item}}
+            </text>
           </view>
         </view>
+        <view class="field">
+          <view class="field-head">
+            <text>工作方式</text>
+          </view>
+          <view class="chips">
+            <text
+              wx:for="{{projectOptions.工作方式}}"
+              wx:key="*this"
+              class="chip {{projectFilters.工作方式 === item ? 'active' : ''}}"
+              data-field="工作方式"
+              data-value="{{item}}"
+              bindtap="onSelectProjectSingle"
+            >
+              {{item}}
+            </text>
+          </view>
+        </view>
+        <view class="field" wx:if="{{projectFilters.工作方式 === '线下' || projectFilters.工作方式 === '混合'}}">
+          <view class="field-head">
+            <text>工作城市</text>
+            <text class="hint">单选</text>
+          </view>
+          <view class="chips">
+            <text
+              wx:for="{{projectOptions.工作城市}}"
+              wx:key="*this"
+              class="chip {{projectFilters.工作城市 === item ? 'active' : ''}}"
+              data-value="{{item}}"
+              bindtap="onSelectProjectCity"
+            >
+              {{item}}
+            </text>
+          </view>
+        </view>
+        <view class="field">
+          <view class="field-head">
+            <text>认证企业</text>
+          </view>
+          <view class="chips">
+            <text
+              wx:for="{{projectOptions.认证企业}}"
+              wx:key="*this"
+              class="chip {{projectFilters.认证企业 === item ? 'active' : ''}}"
+              data-field="认证企业"
+              data-value="{{item}}"
+              bindtap="onSelectProjectSingle"
+            >
+              {{item}}
+            </text>
+          </view>
+        </view>
+      </view>
+
+      <view class="section">
+        <view class="section-title">时间与时长</view>
+        <view class="field">
+          <view class="field-head">
+            <text>开始时间</text>
+          </view>
+          <view class="chips">
+            <text
+              wx:for="{{projectOptions.开始时间}}"
+              wx:key="*this"
+              class="chip {{projectFilters.开始时间 === item ? 'active' : ''}}"
+              data-field="开始时间"
+              data-value="{{item}}"
+              bindtap="onSelectProjectSingle"
+            >
+              {{item}}
+            </text>
+          </view>
+        </view>
+        <view class="field">
+          <view class="field-head">
+            <text>项目时长</text>
+          </view>
+          <view class="chips">
+            <text
+              wx:for="{{projectOptions.项目时长}}"
+              wx:key="*this"
+              class="chip {{projectFilters.项目时长 === item ? 'active' : ''}}"
+              data-field="项目时长"
+              data-value="{{item}}"
+              bindtap="onSelectProjectSingle"
+            >
+              {{item}}
+            </text>
+          </view>
+        </view>
+        <view class="field">
+          <view class="field-head">
+            <text>每天工作时长</text>
+          </view>
+          <view class="chips">
+            <text
+              wx:for="{{projectOptions.每天工作时长}}"
+              wx:key="*this"
+              class="chip {{projectFilters.每天工作时长 === item ? 'active' : ''}}"
+              data-field="每天工作时长"
+              data-value="{{item}}"
+              bindtap="onSelectProjectSingle"
+            >
+              {{item}}
+            </text>
+          </view>
+          <input
+            wx:if="{{projectFilters.每天工作时长 === '自定义'}}"
+            class="custom-input"
+            type="number"
+            placeholder="输入小时数"
+            value="{{projectCustom.自定义每天工作时长}}"
+            bindinput="onProjectCustomInput"
+          />
+        </view>
+        <view class="field">
+          <view class="field-head">
+            <text>每周参与天数</text>
+          </view>
+          <view class="chips">
+            <text
+              wx:for="{{projectOptions.每周参与天数}}"
+              wx:key="*this"
+              class="chip {{projectFilters.每周参与天数 === item ? 'active' : ''}}"
+              data-field="每周参与天数"
+              data-value="{{item}}"
+              bindtap="onSelectProjectSingle"
+            >
+              {{item}}
+            </text>
+          </view>
+        </view>
+      </view>
+
+      <view class="section">
+        <view class="section-title">报酬与结算</view>
+        <view class="field">
+          <view class="field-head">
+            <text>结算方式</text>
+          </view>
+          <view class="chips">
+            <text
+              wx:for="{{projectOptions.结算方式}}"
+              wx:key="*this"
+              class="chip {{projectFilters.结算方式 === item ? 'active' : ''}}"
+              data-field="结算方式"
+              data-value="{{item}}"
+              bindtap="onSelectProjectSingle"
+            >
+              {{item}}
+            </text>
+          </view>
+        </view>
+        <view class="field" wx:if="{{projectFilters.结算方式 === '日薪'}}">
+          <view class="field-head">
+            <text>日薪区间</text>
+          </view>
+          <view class="chips">
+            <text
+              wx:for="{{projectOptions.日薪区间}}"
+              wx:key="*this"
+              class="chip {{projectFilters.日薪区间 === item ? 'active' : ''}}"
+              data-field="日薪区间"
+              data-value="{{item}}"
+              bindtap="onSelectProjectSingle"
+            >
+              {{item}}
+            </text>
+          </view>
+        </view>
+        <view class="field" wx:if="{{projectFilters.结算方式 === '阶段性薪水' || projectFilters.结算方式 === '完成后一次性'}}">
+          <view class="field-head">
+            <text>总额区间</text>
+          </view>
+          <view class="chips">
+            <text
+              wx:for="{{projectOptions.总额区间}}"
+              wx:key="*this"
+              class="chip {{projectFilters.总额区间 === item ? 'active' : ''}}"
+              data-field="总额区间"
+              data-value="{{item}}"
+              bindtap="onSelectProjectSingle"
+            >
+              {{item}}
+            </text>
+          </view>
+        </view>
+      </view>
+
+      <view class="section">
+        <view class="section-title">学历与培训</view>
+        <view class="field">
+          <view class="field-head">
+            <text>学历要求</text>
+          </view>
+          <view class="chips">
+            <text
+              wx:for="{{projectOptions.学历要求}}"
+              wx:key="*this"
+              class="chip {{projectFilters.学历要求 === item ? 'active' : ''}}"
+              data-field="学历要求"
+              data-value="{{item}}"
+              bindtap="onSelectProjectSingle"
+            >
+              {{item}}
+            </text>
+          </view>
+        </view>
+        <view class="field">
+          <view class="field-head">
+            <text>接受年级</text>
+            <text class="hint">多选</text>
+          </view>
+          <view class="chips">
+            <text
+              wx:for="{{projectOptions.接受年级}}"
+              wx:key="*this"
+              class="chip {{projectFilters.接受年级.indexOf(item) > -1 ? 'active' : ''}}"
+              data-field="接受年级"
+              data-value="{{item}}"
+              bindtap="onToggleProjectMulti"
+            >
+              {{item}}
+            </text>
+          </view>
+        </view>
+        <view class="field">
+          <view class="field-head">
+            <text>培训支持</text>
+          </view>
+          <view class="chips">
+            <text
+              wx:for="{{projectOptions.培训支持}}"
+              wx:key="*this"
+              class="chip {{projectFilters.培训支持 === item ? 'active' : ''}}"
+              data-field="培训支持"
+              data-value="{{item}}"
+              bindtap="onSelectProjectSingle"
+            >
+              {{item}}
+            </text>
+          </view>
+        </view>
+      </view>
+
+      <view class="section">
+        <view class="section-title">福利与保障</view>
+        <view class="field">
+          <view class="field-head">
+            <text>福利待遇</text>
+            <text class="hint">多选</text>
+          </view>
+          <view class="chips">
+            <text
+              wx:for="{{projectOptions.福利待遇}}"
+              wx:key="*this"
+              class="chip {{projectFilters.福利待遇.indexOf(item) > -1 ? 'active' : ''}}"
+              data-field="福利待遇"
+              data-value="{{item}}"
+              bindtap="onToggleProjectMulti"
+            >
+              {{item}}
+            </text>
+          </view>
+        </view>
+      </view>
+    </block>
+
+    <block wx:elif="{{activeCategory === 'job'}}">
+      <view class="section">
+        <view class="section-title">岗位基础要求</view>
+        <view class="field">
+          <view class="field-head">
+            <text>学历要求</text>
+          </view>
+          <view class="chips">
+            <text
+              wx:for="{{jobOptions.学历要求}}"
+              wx:key="*this"
+              class="chip {{jobFilters.学历要求 === item ? 'active' : ''}}"
+              data-field="学历要求"
+              data-value="{{item}}"
+              bindtap="onSelectJobSingle"
+            >
+              {{item}}
+            </text>
+          </view>
+        </view>
+        <view class="field">
+          <view class="field-head">
+            <text>经验要求</text>
+          </view>
+          <view class="chips">
+            <text
+              wx:for="{{jobOptions.经验要求}}"
+              wx:key="*this"
+              class="chip {{jobFilters.经验要求 === item ? 'active' : ''}}"
+              data-field="经验要求"
+              data-value="{{item}}"
+              bindtap="onSelectJobSingle"
+            >
+              {{item}}
+            </text>
+          </view>
+        </view>
+      </view>
+
+      <view class="section">
+        <view class="section-title">福利与薪资</view>
+        <view class="field">
+          <view class="field-head">
+            <text>福利待遇</text>
+            <text class="hint">多选</text>
+          </view>
+          <view class="chips">
+            <text
+              wx:for="{{jobOptions.福利待遇}}"
+              wx:key="*this"
+              class="chip {{jobFilters.福利待遇.indexOf(item) > -1 ? 'active' : ''}}"
+              data-field="福利待遇"
+              data-value="{{item}}"
+              bindtap="onToggleJobMulti"
+            >
+              {{item}}
+            </text>
+          </view>
+        </view>
+        <view class="field">
+          <view class="field-head">
+            <text>薪资待遇</text>
+          </view>
+          <view class="chips">
+            <text
+              wx:for="{{jobOptions.薪资待遇}}"
+              wx:key="*this"
+              class="chip {{jobFilters.薪资待遇 === item ? 'active' : ''}}"
+              data-field="薪资待遇"
+              data-value="{{item}}"
+              bindtap="onSelectJobSingle"
+            >
+              {{item}}
+            </text>
+          </view>
+          <view class="custom-range" wx:if="{{jobFilters.薪资待遇 === '自定义薪资'}}">
+            <input
+              class="custom-input"
+              type="number"
+              placeholder="最低 (K)"
+              value="{{jobCustom.自定义最低薪资}}"
+              data-field="自定义最低薪资"
+              bindinput="onJobCustomInput"
+            />
+            <text class="divider">-</text>
+            <input
+              class="custom-input"
+              type="number"
+              placeholder="最高 (K)"
+              value="{{jobCustom.自定义最高薪资}}"
+              data-field="自定义最高薪资"
+              bindinput="onJobCustomInput"
+            />
+          </view>
+        </view>
+      </view>
+
+      <view class="section">
+        <view class="section-title">企业信息</view>
+        <view class="field">
+          <view class="field-head">
+            <text>公司规模</text>
+          </view>
+          <view class="chips">
+            <text
+              wx:for="{{jobOptions.公司规模}}"
+              wx:key="*this"
+              class="chip {{jobFilters.公司规模 === item ? 'active' : ''}}"
+              data-field="公司规模"
+              data-value="{{item}}"
+              bindtap="onSelectJobSingle"
+            >
+              {{item}}
+            </text>
+          </view>
+        </view>
+        <view class="field">
+          <view class="field-head">
+            <text>BOSS活跃状态</text>
+          </view>
+          <view class="chips">
+            <text
+              wx:for="{{jobOptions.BOSS活跃状态}}"
+              wx:key="*this"
+              class="chip {{jobFilters.BOSS活跃状态 === item ? 'active' : ''}}"
+              data-field="BOSS活跃状态"
+              data-value="{{item}}"
+              bindtap="onSelectJobSingle"
+            >
+              {{item}}
+            </text>
+          </view>
+        </view>
+        <view class="field">
+          <view class="field-head">
+            <text>融资阶段</text>
+          </view>
+          <view class="chips">
+            <text
+              wx:for="{{jobOptions.融资阶段}}"
+              wx:key="*this"
+              class="chip {{jobFilters.融资阶段 === item ? 'active' : ''}}"
+              data-field="融资阶段"
+              data-value="{{item}}"
+              bindtap="onSelectJobSingle"
+            >
+              {{item}}
+            </text>
+          </view>
+        </view>
+      </view>
+
+      <view class="section">
+        <view class="section-title">所属行业</view>
+        <view class="field">
+          <view class="field-head">
+            <text>行业标签</text>
+            <text class="hint">最多 3 个</text>
+          </view>
+          <view class="chips">
+            <text
+              wx:for="{{jobOptions.所属行业}}"
+              wx:key="*this"
+              class="chip {{jobFilters.所属行业.indexOf(item) > -1 ? 'active' : ''}}"
+              data-field="所属行业"
+              data-value="{{item}}"
+              bindtap="onToggleJobMulti"
+            >
+              {{item}}
+            </text>
+          </view>
+        </view>
+      </view>
+    </block>
+
+    <view class="actions">
+      <button class="ghost" bindtap="onSmartRecommend">智能推荐</button>
+      <button class="ghost" bindtap="onResetFilters">清空筛选</button>
+    </view>
+
+    <view class="results">
+      <block wx:if="{{activeCategory === 'project'}}">
+        <block wx:for="{{displayList}}" wx:key="id">
+          <view class="result-card">
+            <view class="result-head">
+              <text class="result-title">{{item.项目名称}}</text>
+              <text class="badge" wx:if="{{item.认证企业}}">认证企业</text>
+            </view>
+            <view class="result-meta">
+              {{item.工作方式}}
+              <text wx:if="{{item.工作城市}}"> · {{item.工作城市}}</text>
+              · {{item.项目时长}}
+              · {{item.结算方式}}
+            </view>
+            <view class="result-desc">{{item.简介}}</view>
+            <view class="result-tags">
+              <text wx:for="{{item.项目类型}}" wx:key="*this" class="tag">{{tag}}</text>
+              <text class="tag">{{item.开始时间}}</text>
+              <text class="tag">
+                {{item.每天工作时长 === '自定义' ? item.自定义每天工作时长 + '小时' : item.每天工作时长}}
+              </text>
+              <text class="tag">{{item.每周参与天数}}</text>
+            </view>
+          </view>
+        </block>
+        <view class="empty" wx:if="{{!displayList.length}}">暂无符合条件的项目</view>
       </block>
-      <view class="empty" wx:if="{{!items.length}}">暂无数据，调整筛选试试</view>
+
+      <block wx:elif="{{activeCategory === 'job'}}">
+        <block wx:for="{{displayList}}" wx:key="id">
+          <view class="result-card">
+            <view class="result-head">
+              <text class="result-title">{{item.岗位名称}}</text>
+              <text class="badge" wx:if="{{item.认证企业}}">认证企业</text>
+            </view>
+            <view class="result-meta">
+              {{item.城市}}
+              · {{item.薪资待遇 === '自定义薪资' ? item.自定义最低薪资 + 'K-' + item.自定义最高薪资 + 'K' : item.薪资待遇}}
+              · {{item.公司规模}}
+            </view>
+            <view class="result-desc">{{item.简介}}</view>
+            <view class="result-tags">
+              <text class="tag">{{item.学历要求}}</text>
+              <text class="tag">{{item.经验要求}}</text>
+              <text wx:for="{{item.福利待遇}}" wx:key="*this" class="tag">{{tag}}</text>
+              <text wx:for="{{item.所属行业}}" wx:key="tag" class="tag">{{tag}}</text>
+            </view>
+          </view>
+        </block>
+        <view class="empty" wx:if="{{!displayList.length}}">暂无符合条件的岗位</view>
+      </block>
     </view>
   </scroll-view>
   <fab />
