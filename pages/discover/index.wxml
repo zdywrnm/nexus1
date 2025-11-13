@@ -32,9 +32,9 @@
           </view>
           <view class="chips">
             <text
-              wx:for="{{projectOptions.项目类型}}"
+              wx:for="{{projectOptions['项目类型']}}"
               wx:key="*this"
-              class="chip {{projectFilters.项目类型.indexOf(item) > -1 ? 'active' : ''}}"
+              class="chip {{projectFilters['项目类型'].indexOf(item) > -1 ? 'active' : ''}}"
               data-field="项目类型"
               data-value="{{item}}"
               bindtap="onToggleProjectMulti"
@@ -49,9 +49,9 @@
           </view>
           <view class="chips">
             <text
-              wx:for="{{projectOptions.工作方式}}"
+              wx:for="{{projectOptions['工作方式']}}"
               wx:key="*this"
-              class="chip {{projectFilters.工作方式 === item ? 'active' : ''}}"
+              class="chip {{projectFilters['工作方式'] === item ? 'active' : ''}}"
               data-field="工作方式"
               data-value="{{item}}"
               bindtap="onSelectProjectSingle"
@@ -60,16 +60,16 @@
             </text>
           </view>
         </view>
-        <view class="field" wx:if="{{projectFilters.工作方式 === '线下' || projectFilters.工作方式 === '混合'}}">
+        <view class="field" wx:if="{{projectFilters['工作方式'] === '线下' || projectFilters['工作方式'] === '混合'}}">
           <view class="field-head">
             <text>工作城市</text>
             <text class="hint">单选</text>
           </view>
           <view class="chips">
             <text
-              wx:for="{{projectOptions.工作城市}}"
+              wx:for="{{projectOptions['工作城市']}}"
               wx:key="*this"
-              class="chip {{projectFilters.工作城市 === item ? 'active' : ''}}"
+              class="chip {{projectFilters['工作城市'] === item ? 'active' : ''}}"
               data-value="{{item}}"
               bindtap="onSelectProjectCity"
             >
@@ -83,9 +83,9 @@
           </view>
           <view class="chips">
             <text
-              wx:for="{{projectOptions.认证企业}}"
+              wx:for="{{projectOptions['认证企业']}}"
               wx:key="*this"
-              class="chip {{projectFilters.认证企业 === item ? 'active' : ''}}"
+              class="chip {{projectFilters['认证企业'] === item ? 'active' : ''}}"
               data-field="认证企业"
               data-value="{{item}}"
               bindtap="onSelectProjectSingle"
@@ -104,9 +104,9 @@
           </view>
           <view class="chips">
             <text
-              wx:for="{{projectOptions.开始时间}}"
+              wx:for="{{projectOptions['开始时间']}}"
               wx:key="*this"
-              class="chip {{projectFilters.开始时间 === item ? 'active' : ''}}"
+              class="chip {{projectFilters['开始时间'] === item ? 'active' : ''}}"
               data-field="开始时间"
               data-value="{{item}}"
               bindtap="onSelectProjectSingle"
@@ -121,9 +121,9 @@
           </view>
           <view class="chips">
             <text
-              wx:for="{{projectOptions.项目时长}}"
+              wx:for="{{projectOptions['项目时长']}}"
               wx:key="*this"
-              class="chip {{projectFilters.项目时长 === item ? 'active' : ''}}"
+              class="chip {{projectFilters['项目时长'] === item ? 'active' : ''}}"
               data-field="项目时长"
               data-value="{{item}}"
               bindtap="onSelectProjectSingle"
@@ -138,9 +138,9 @@
           </view>
           <view class="chips">
             <text
-              wx:for="{{projectOptions.每天工作时长}}"
+              wx:for="{{projectOptions['每天工作时长']}}"
               wx:key="*this"
-              class="chip {{projectFilters.每天工作时长 === item ? 'active' : ''}}"
+              class="chip {{projectFilters['每天工作时长'] === item ? 'active' : ''}}"
               data-field="每天工作时长"
               data-value="{{item}}"
               bindtap="onSelectProjectSingle"
@@ -149,11 +149,11 @@
             </text>
           </view>
           <input
-            wx:if="{{projectFilters.每天工作时长 === '自定义'}}"
+            wx:if="{{projectFilters['每天工作时长'] === '自定义'}}"
             class="custom-input"
             type="number"
             placeholder="输入小时数"
-            value="{{projectCustom.自定义每天工作时长}}"
+            value="{{projectCustom['自定义每天工作时长']}}"
             bindinput="onProjectCustomInput"
           />
         </view>
@@ -163,9 +163,9 @@
           </view>
           <view class="chips">
             <text
-              wx:for="{{projectOptions.每周参与天数}}"
+              wx:for="{{projectOptions['每周参与天数']}}"
               wx:key="*this"
-              class="chip {{projectFilters.每周参与天数 === item ? 'active' : ''}}"
+              class="chip {{projectFilters['每周参与天数'] === item ? 'active' : ''}}"
               data-field="每周参与天数"
               data-value="{{item}}"
               bindtap="onSelectProjectSingle"
@@ -184,9 +184,9 @@
           </view>
           <view class="chips">
             <text
-              wx:for="{{projectOptions.结算方式}}"
+              wx:for="{{projectOptions['结算方式']}}"
               wx:key="*this"
-              class="chip {{projectFilters.结算方式 === item ? 'active' : ''}}"
+              class="chip {{projectFilters['结算方式'] === item ? 'active' : ''}}"
               data-field="结算方式"
               data-value="{{item}}"
               bindtap="onSelectProjectSingle"
@@ -195,15 +195,15 @@
             </text>
           </view>
         </view>
-        <view class="field" wx:if="{{projectFilters.结算方式 === '日薪'}}">
+        <view class="field" wx:if="{{projectFilters['结算方式'] === '日薪'}}">
           <view class="field-head">
             <text>日薪区间</text>
           </view>
           <view class="chips">
             <text
-              wx:for="{{projectOptions.日薪区间}}"
+              wx:for="{{projectOptions['日薪区间']}}"
               wx:key="*this"
-              class="chip {{projectFilters.日薪区间 === item ? 'active' : ''}}"
+              class="chip {{projectFilters['日薪区间'] === item ? 'active' : ''}}"
               data-field="日薪区间"
               data-value="{{item}}"
               bindtap="onSelectProjectSingle"
@@ -212,15 +212,15 @@
             </text>
           </view>
         </view>
-        <view class="field" wx:if="{{projectFilters.结算方式 === '阶段性薪水' || projectFilters.结算方式 === '完成后一次性'}}">
+        <view class="field" wx:if="{{projectFilters['结算方式'] === '阶段性薪水' || projectFilters['结算方式'] === '完成后一次性'}}">
           <view class="field-head">
             <text>总额区间</text>
           </view>
           <view class="chips">
             <text
-              wx:for="{{projectOptions.总额区间}}"
+              wx:for="{{projectOptions['总额区间']}}"
               wx:key="*this"
-              class="chip {{projectFilters.总额区间 === item ? 'active' : ''}}"
+              class="chip {{projectFilters['总额区间'] === item ? 'active' : ''}}"
               data-field="总额区间"
               data-value="{{item}}"
               bindtap="onSelectProjectSingle"
@@ -239,9 +239,9 @@
           </view>
           <view class="chips">
             <text
-              wx:for="{{projectOptions.学历要求}}"
+              wx:for="{{projectOptions['学历要求']}}"
               wx:key="*this"
-              class="chip {{projectFilters.学历要求 === item ? 'active' : ''}}"
+              class="chip {{projectFilters['学历要求'] === item ? 'active' : ''}}"
               data-field="学历要求"
               data-value="{{item}}"
               bindtap="onSelectProjectSingle"
@@ -257,9 +257,9 @@
           </view>
           <view class="chips">
             <text
-              wx:for="{{projectOptions.接受年级}}"
+              wx:for="{{projectOptions['接受年级']}}"
               wx:key="*this"
-              class="chip {{projectFilters.接受年级.indexOf(item) > -1 ? 'active' : ''}}"
+              class="chip {{projectFilters['接受年级'].indexOf(item) > -1 ? 'active' : ''}}"
               data-field="接受年级"
               data-value="{{item}}"
               bindtap="onToggleProjectMulti"
@@ -274,9 +274,9 @@
           </view>
           <view class="chips">
             <text
-              wx:for="{{projectOptions.培训支持}}"
+              wx:for="{{projectOptions['培训支持']}}"
               wx:key="*this"
-              class="chip {{projectFilters.培训支持 === item ? 'active' : ''}}"
+              class="chip {{projectFilters['培训支持'] === item ? 'active' : ''}}"
               data-field="培训支持"
               data-value="{{item}}"
               bindtap="onSelectProjectSingle"
@@ -296,9 +296,9 @@
           </view>
           <view class="chips">
             <text
-              wx:for="{{projectOptions.福利待遇}}"
+              wx:for="{{projectOptions['福利待遇']}}"
               wx:key="*this"
-              class="chip {{projectFilters.福利待遇.indexOf(item) > -1 ? 'active' : ''}}"
+              class="chip {{projectFilters['福利待遇'].indexOf(item) > -1 ? 'active' : ''}}"
               data-field="福利待遇"
               data-value="{{item}}"
               bindtap="onToggleProjectMulti"
@@ -319,9 +319,9 @@
           </view>
           <view class="chips">
             <text
-              wx:for="{{jobOptions.学历要求}}"
+              wx:for="{{jobOptions['学历要求']}}"
               wx:key="*this"
-              class="chip {{jobFilters.学历要求 === item ? 'active' : ''}}"
+              class="chip {{jobFilters['学历要求'] === item ? 'active' : ''}}"
               data-field="学历要求"
               data-value="{{item}}"
               bindtap="onSelectJobSingle"
@@ -336,9 +336,9 @@
           </view>
           <view class="chips">
             <text
-              wx:for="{{jobOptions.经验要求}}"
+              wx:for="{{jobOptions['经验要求']}}"
               wx:key="*this"
-              class="chip {{jobFilters.经验要求 === item ? 'active' : ''}}"
+              class="chip {{jobFilters['经验要求'] === item ? 'active' : ''}}"
               data-field="经验要求"
               data-value="{{item}}"
               bindtap="onSelectJobSingle"
@@ -358,9 +358,9 @@
           </view>
           <view class="chips">
             <text
-              wx:for="{{jobOptions.福利待遇}}"
+              wx:for="{{jobOptions['福利待遇']}}"
               wx:key="*this"
-              class="chip {{jobFilters.福利待遇.indexOf(item) > -1 ? 'active' : ''}}"
+              class="chip {{jobFilters['福利待遇'].indexOf(item) > -1 ? 'active' : ''}}"
               data-field="福利待遇"
               data-value="{{item}}"
               bindtap="onToggleJobMulti"
@@ -375,9 +375,9 @@
           </view>
           <view class="chips">
             <text
-              wx:for="{{jobOptions.薪资待遇}}"
+              wx:for="{{jobOptions['薪资待遇']}}"
               wx:key="*this"
-              class="chip {{jobFilters.薪资待遇 === item ? 'active' : ''}}"
+              class="chip {{jobFilters['薪资待遇'] === item ? 'active' : ''}}"
               data-field="薪资待遇"
               data-value="{{item}}"
               bindtap="onSelectJobSingle"
@@ -385,12 +385,12 @@
               {{item}}
             </text>
           </view>
-          <view class="custom-range" wx:if="{{jobFilters.薪资待遇 === '自定义薪资'}}">
+          <view class="custom-range" wx:if="{{jobFilters['薪资待遇'] === '自定义薪资'}}">
             <input
               class="custom-input"
               type="number"
               placeholder="最低 (K)"
-              value="{{jobCustom.自定义最低薪资}}"
+              value="{{jobCustom['自定义最低薪资']}}"
               data-field="自定义最低薪资"
               bindinput="onJobCustomInput"
             />
@@ -399,7 +399,7 @@
               class="custom-input"
               type="number"
               placeholder="最高 (K)"
-              value="{{jobCustom.自定义最高薪资}}"
+              value="{{jobCustom['自定义最高薪资']}}"
               data-field="自定义最高薪资"
               bindinput="onJobCustomInput"
             />
@@ -415,9 +415,9 @@
           </view>
           <view class="chips">
             <text
-              wx:for="{{jobOptions.公司规模}}"
+              wx:for="{{jobOptions['公司规模']}}"
               wx:key="*this"
-              class="chip {{jobFilters.公司规模 === item ? 'active' : ''}}"
+              class="chip {{jobFilters['公司规模'] === item ? 'active' : ''}}"
               data-field="公司规模"
               data-value="{{item}}"
               bindtap="onSelectJobSingle"
@@ -432,9 +432,9 @@
           </view>
           <view class="chips">
             <text
-              wx:for="{{jobOptions.BOSS活跃状态}}"
+              wx:for="{{jobOptions['BOSS活跃状态']}}"
               wx:key="*this"
-              class="chip {{jobFilters.BOSS活跃状态 === item ? 'active' : ''}}"
+              class="chip {{jobFilters['BOSS活跃状态'] === item ? 'active' : ''}}"
               data-field="BOSS活跃状态"
               data-value="{{item}}"
               bindtap="onSelectJobSingle"
@@ -449,9 +449,9 @@
           </view>
           <view class="chips">
             <text
-              wx:for="{{jobOptions.融资阶段}}"
+              wx:for="{{jobOptions['融资阶段']}}"
               wx:key="*this"
-              class="chip {{jobFilters.融资阶段 === item ? 'active' : ''}}"
+              class="chip {{jobFilters['融资阶段'] === item ? 'active' : ''}}"
               data-field="融资阶段"
               data-value="{{item}}"
               bindtap="onSelectJobSingle"
@@ -471,9 +471,9 @@
           </view>
           <view class="chips">
             <text
-              wx:for="{{jobOptions.所属行业}}"
+              wx:for="{{jobOptions['所属行业']}}"
               wx:key="*this"
-              class="chip {{jobFilters.所属行业.indexOf(item) > -1 ? 'active' : ''}}"
+              class="chip {{jobFilters['所属行业'].indexOf(item) > -1 ? 'active' : ''}}"
               data-field="所属行业"
               data-value="{{item}}"
               bindtap="onToggleJobMulti"
@@ -495,23 +495,23 @@
         <block wx:for="{{displayList}}" wx:key="id">
           <view class="result-card">
             <view class="result-head">
-              <text class="result-title">{{item.项目名称}}</text>
-              <text class="badge" wx:if="{{item.认证企业}}">认证企业</text>
+              <text class="result-title">{{item['项目名称']}}</text>
+              <text class="badge" wx:if="{{item['认证企业']}}">认证企业</text>
             </view>
             <view class="result-meta">
-              {{item.工作方式}}
-              <text wx:if="{{item.工作城市}}"> · {{item.工作城市}}</text>
-              · {{item.项目时长}}
-              · {{item.结算方式}}
+              {{item['工作方式']}}
+              <text wx:if="{{item['工作城市']}}"> · {{item['工作城市']}}</text>
+              · {{item['项目时长']}}
+              · {{item['结算方式']}}
             </view>
-            <view class="result-desc">{{item.简介}}</view>
+            <view class="result-desc">{{item['简介']}}</view>
             <view class="result-tags">
-              <text wx:for="{{item.项目类型}}" wx:key="*this" class="tag">{{tag}}</text>
-              <text class="tag">{{item.开始时间}}</text>
+              <text wx:for="{{item['项目类型']}}" wx:key="*this" class="tag">{{tag}}</text>
+              <text class="tag">{{item['开始时间']}}</text>
               <text class="tag">
-                {{item.每天工作时长 === '自定义' ? item.自定义每天工作时长 + '小时' : item.每天工作时长}}
+                {{item['每天工作时长'] === '自定义' ? item['自定义每天工作时长'] + '小时' : item['每天工作时长']}}
               </text>
-              <text class="tag">{{item.每周参与天数}}</text>
+              <text class="tag">{{item['每周参与天数']}}</text>
             </view>
           </view>
         </block>
@@ -522,20 +522,20 @@
         <block wx:for="{{displayList}}" wx:key="id">
           <view class="result-card">
             <view class="result-head">
-              <text class="result-title">{{item.岗位名称}}</text>
-              <text class="badge" wx:if="{{item.认证企业}}">认证企业</text>
+              <text class="result-title">{{item['岗位名称']}}</text>
+              <text class="badge" wx:if="{{item['认证企业']}}">认证企业</text>
             </view>
             <view class="result-meta">
-              {{item.城市}}
-              · {{item.薪资待遇 === '自定义薪资' ? item.自定义最低薪资 + 'K-' + item.自定义最高薪资 + 'K' : item.薪资待遇}}
-              · {{item.公司规模}}
+              {{item['城市']}}
+              · {{item['薪资待遇'] === '自定义薪资' ? item['自定义最低薪资'] + 'K-' + item['自定义最高薪资'] + 'K' : item['薪资待遇']}}
+              · {{item['公司规模']}}
             </view>
-            <view class="result-desc">{{item.简介}}</view>
+            <view class="result-desc">{{item['简介']}}</view>
             <view class="result-tags">
-              <text class="tag">{{item.学历要求}}</text>
-              <text class="tag">{{item.经验要求}}</text>
-              <text wx:for="{{item.福利待遇}}" wx:key="*this" class="tag">{{tag}}</text>
-              <text wx:for="{{item.所属行业}}" wx:key="tag" class="tag">{{tag}}</text>
+              <text class="tag">{{item['学历要求']}}</text>
+              <text class="tag">{{item['经验要求']}}</text>
+              <text wx:for="{{item['福利待遇']}}" wx:key="*this" class="tag">{{tag}}</text>
+              <text wx:for="{{item['所属行业']}}" wx:key="tag" class="tag">{{tag}}</text>
             </view>
           </view>
         </block>
