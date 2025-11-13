@@ -1,4 +1,5 @@
 {
+  "navigationBarTitleText": "协作",
   "usingComponents": {
     "fab": "/components/fab/fab"
   }

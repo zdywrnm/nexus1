@@ -1,0 +1,28 @@
+.fab {
+  position: fixed;
+  right: 40rpx;
+  bottom: 120rpx;
+  width: 112rpx;
+  height: 112rpx;
+  border-radius: 56rpx;
+  background: linear-gradient(135deg, #2f7bff, #4096ff);
+  box-shadow: 0 20rpx 32rpx rgba(64, 150, 255, 0.35);
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 26rpx;
+  z-index: 20;
+}
+
+.fab-icon {
+  font-size: 48rpx;
+  line-height: 48rpx;
+  font-weight: 500;
+}
+
+.fab-text {
+  font-size: 22rpx;
+  margin-top: 4rpx;
+}

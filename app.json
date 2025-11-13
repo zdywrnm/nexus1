@@ -1,30 +1,41 @@
 {
   "pages": [
     "pages/index/index",
+    "pages/discover/index",
+    "pages/collaborate/index",
+    "pages/messages/index",
+    "pages/profile/profile",
     "pages/detail/detail",
-    "pages/post/post",
-    "pages/profile/profile"
+    "pages/post/post"
   ],
   "window": {
     "navigationBarBackgroundColor": "#ffffff",
     "navigationBarTextStyle": "black",
-    "navigationBarTitleText": "项目协作演示",
-    "backgroundColor": "#ffffff",
+    "navigationBarTitleText": "Nexus 协同平台",
+    "backgroundColor": "#f6f8fa",
     "backgroundTextStyle": "dark"
   },
   "tabBar": {
-    "color": "#666666",
+    "color": "#5c6670",
     "selectedColor": "#1677ff",
     "backgroundColor": "#ffffff",
     "borderStyle": "black",
     "list": [
       {
         "pagePath": "pages/index/index",
-        "text": "项目"
+        "text": "首页"
       },
       {
-        "pagePath": "pages/post/post",
-        "text": "发布"
+        "pagePath": "pages/discover/index",
+        "text": "发现"
+      },
+      {
+        "pagePath": "pages/collaborate/index",
+        "text": "协作"
+      },
+      {
+        "pagePath": "pages/messages/index",
+        "text": "消息"
       },
       {
         "pagePath": "pages/profile/profile",

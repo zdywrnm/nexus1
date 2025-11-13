@@ -1,0 +1,111 @@
+<view class="collaborate-page">
+  <scroll-view scroll-y class="scroll">
+    <view class="top-panel">
+      <view class="switcher">
+        <text
+          wx:for="{{tabs}}"
+          wx:key="key"
+          data-key="{{item.key}}"
+          bindtap="onTabChange"
+          class="switch-item {{activeTab === item.key ? 'active' : ''}}"
+        >
+          {{item.label}}
+        </text>
+      </view>
+      <view class="summary">
+        <view class="summary-item" wx:for="{{summary}}" wx:key="label">
+          <text class="label">{{item.label}}</text>
+          <text class="value">{{item.value}}</text>
+          <text class="hint">{{item.hint}}</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="board">
+      <view class="board-header">
+        <text class="board-title">项目看板</text>
+        <text class="board-sub">拖拽卡片可调整阶段，异常会自动橙色标记</text>
+      </view>
+      <scroll-view scroll-x class="board-scroll">
+        <view class="board-columns">
+          <block wx:for="{{columns}}" wx:for-item="column" wx:key="status">
+            <view class="column">
+              <view class="column-head">
+                <text class="column-title">{{column.title}}</text>
+                <text class="column-count">{{column.items.length}}</text>
+              </view>
+              <view class="column-body">
+                <block wx:for="{{column.items}}" wx:for-item="card" wx:key="id">
+                  <view class="card {{card.risk}}">
+                    <view class="card-title">{{card.name}}</view>
+                    <view class="card-meta">里程碑 {{card.nextMilestone}} · 倒计时 {{card.countdown}}</view>
+                    <view class="card-progress">
+                      <view class="progress-bar">
+                        <view class="progress-fill" style="width: {{card.progress}}%"></view>
+                      </view>
+                      <text class="progress-text">{{card.progress}}%</text>
+                    </view>
+                    <view class="card-links">
+                      <text>待办 {{card.todos}}</text>
+                      <text>文件 {{card.files}}</text>
+                      <text>讨论 {{card.messages}}</text>
+                    </view>
+                  </view>
+                </block>
+                <view class="empty" wx:if="{{!column.items.length}}">暂无项目</view>
+              </view>
+            </view>
+          </block>
+        </view>
+      </scroll-view>
+    </view>
+
+    <view class="workbench">
+      <view class="section-head">
+        <text class="section-title">单项目工作区</text>
+        <text class="section-sub">对齐里程碑、文件与讨论，支持一键仲裁</text>
+      </view>
+      <view class="workspace" wx:for="{{workspace}}" wx:for-item="space" wx:key="title">
+        <view class="workspace-head">
+          <text class="workspace-title">{{space.title}}</text>
+          <text class="badge" wx:if="{{space.tag}}">{{space.tag}}</text>
+        </view>
+        <view class="workspace-milestones">
+          <view class="milestone" wx:for="{{space.milestones}}" wx:for-item="milestone" wx:key="name">
+            <text class="milestone-name">{{milestone.name}}</text>
+            <text class="milestone-status {{milestone.status}}">{{milestone.statusLabel}}</text>
+            <text class="milestone-deadline">{{milestone.deadline}}</text>
+          </view>
+        </view>
+        <view class="workspace-actions">
+          <text class="action">阶段结算</text>
+          <text class="action">提交物</text>
+          <text class="action">争议处理</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="talent" wx:if="{{activeTab === 'published'}}">
+      <view class="section-head">
+        <text class="section-title">岗位管理</text>
+        <text class="section-sub">AI 排序候选人，支持批量发送 Offer</text>
+      </view>
+      <view class="talent-card" wx:for="{{talentPipeline}}" wx:for-item="stage" wx:key="stage">
+        <view class="talent-head">
+          <text class="talent-stage">{{stage.stage}}</text>
+          <text class="talent-count">{{stage.count}} 人</text>
+        </view>
+        <view class="talent-body">
+          <block wx:for="{{stage.candidates}}" wx:for-item="candidate" wx:key="name">
+            <view class="candidate">
+              <view class="candidate-name">{{candidate.name}}</view>
+              <text class="candidate-score">{{candidate.score}}</text>
+              <text class="candidate-skill">{{candidate.skill}}</text>
+            </view>
+          </block>
+        </view>
+      </view>
+    </view>
+  </scroll-view>
+  <fab />
+</view>

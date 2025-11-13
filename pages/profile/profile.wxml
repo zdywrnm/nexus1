@@ -1,21 +1,93 @@
-<view class="page">
-  <view class="card hero">
-    <text class="hero-title">学生 · 演示账号</text>
-    <text class="hero-sub">近90天活跃 80% · 准时率 100%</text>
-  </view>
-
-  <view class="card">
-    <view class="section-header">我的技能</view>
-    <view class="skills">
-      <text class="chip" wx:for="{{skills}}" wx:key="*this">{{item}}</text>
+<view class="profile-page">
+  <scroll-view scroll-y class="scroll">
+    <view class="hero">
+      <view class="hero-info">
+        <text class="hero-name">李想 · 校园创客</text>
+        <text class="hero-sub">多角色：学生｜自由职业者｜企业联系人</text>
+        <view class="hero-tags">
+          <text class="tag">信用 A+</text>
+          <text class="tag">完成度 98%</text>
+          <text class="tag">按时交付 12/12</text>
+        </view>
+      </view>
+      <view class="hero-badges">
+        <text class="badge">校企联合认证</text>
+        <text class="badge">公益星火计划</text>
+      </view>
     </view>
-  </view>
 
-  <view class="card">
-    <view class="section-header">我的履历</view>
-    <view class="resume" wx:for="{{resume}}" wx:key="title">
-      <view class="resume-title">{{item.title}}</view>
-      <view class="resume-score">评分 {{item.score}}</view>
+    <view class="section card">
+      <view class="section-head">
+        <text class="section-title">身份与认证</text>
+        <text class="section-action">管理认证</text>
+      </view>
+      <view class="identity-grid">
+        <view class="identity-item" wx:for="{{identities}}" wx:key="title">
+          <view class="identity-title">{{item.title}}</view>
+          <view class="identity-status {{item.statusClass}}">{{item.status}}</view>
+          <view class="identity-desc">{{item.desc}}</view>
+        </view>
+      </view>
     </view>
-  </view>
+
+    <view class="section card">
+      <view class="section-head">
+        <text class="section-title">履历与作品集</text>
+        <text class="section-action">查看全部</text>
+      </view>
+      <view class="resume-list">
+        <view class="resume-item" wx:for="{{experience}}" wx:key="title">
+          <view class="resume-main">
+            <text class="resume-title">{{item.title}}</text>
+            <text class="resume-score">评分 {{item.score}}</text>
+          </view>
+          <view class="resume-meta">{{item.detail}}</view>
+          <view class="resume-tags">
+            <text wx:for="{{item.tags}}" wx:for-item="tag" wx:key="*this" class="tag">{{tag}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view class="section card">
+      <view class="section-head">
+        <text class="section-title">成长激励</text>
+        <text class="section-action">查看积分</text>
+      </view>
+      <view class="growth">
+        <view class="growth-item" wx:for="{{growth}}" wx:key="title">
+          <text class="growth-title">{{item.title}}</text>
+          <text class="growth-value">{{item.value}}</text>
+          <text class="growth-desc">{{item.desc}}</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="section card">
+      <view class="section-head">
+        <text class="section-title">账务与发票</text>
+        <text class="section-action">查看明细</text>
+      </view>
+      <view class="finance">
+        <view class="finance-item" wx:for="{{finance}}" wx:key="title">
+          <text class="finance-title">{{item.title}}</text>
+          <text class="finance-value">{{item.value}}</text>
+          <text class="finance-desc">{{item.desc}}</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="section card">
+      <view class="section-head">
+        <text class="section-title">设置与支持</text>
+      </view>
+      <view class="settings">
+        <view class="setting-item" wx:for="{{settings}}" wx:key="title">
+          <text class="setting-title">{{item.title}}</text>
+          <text class="setting-desc">{{item.desc}}</text>
+        </view>
+      </view>
+    </view>
+  </scroll-view>
+  <fab />
 </view>

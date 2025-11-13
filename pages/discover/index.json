@@ -1,4 +1,5 @@
 {
+  "navigationBarTitleText": "发现",
   "usingComponents": {
     "fab": "/components/fab/fab"
   }

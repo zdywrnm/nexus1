@@ -1,0 +1,88 @@
+<view class="discover-page">
+  <scroll-view scroll-y class="scroll">
+    <view class="filter-panel">
+      <view class="panel-title">高级检索</view>
+      <view class="panel-sub">行业、技能、预算、校企标签一站筛选，可保存组合</view>
+
+      <block wx:for="{{filters}}" wx:key="key">
+        <view class="filter-group">
+          <view class="group-head">
+            <text class="group-name">{{item.name}}</text>
+            <text class="group-tip">{{item.tip}}</text>
+          </view>
+          <view class="group-options">
+            <text
+              wx:for="{{item.options}}"
+              wx:for-item="option"
+              wx:key="value"
+              class="chip {{isSelected(item.key, option.value) ? 'active' : ''}}"
+              data-group="{{item.key}}"
+              data-value="{{option.value}}"
+              bindtap="onToggle"
+            >
+              {{option.label}}
+            </text>
+          </view>
+        </view>
+      </block>
+
+      <view class="panel-actions">
+        <button class="ghost" bindtap="onSave">保存筛选</button>
+        <button class="ghost" bindtap="onSmart">智能推荐</button>
+        <text class="clear" bindtap="onReset">清空</text>
+      </view>
+
+      <view class="panel-meta">
+        <view class="meta-item">
+          <text class="meta-title">历史偏好</text>
+          <text class="meta-desc">{{historyHint}}</text>
+        </view>
+        <view class="meta-item">
+          <text class="meta-title">协作方式</text>
+          <text class="meta-desc">当前包含个人与团队项目</text>
+        </view>
+        <view class="meta-item">
+          <text class="meta-title">地图视图</text>
+          <view class="switch">
+            <switch checked="{{mapMode}}" bindchange="onToggleMap" color="#1677ff" />
+            <text>{{mapMode ? '已显示同城任务' : '切换查看同城任务'}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view class="result-tabs">
+      <text
+        wx:for="{{categories}}"
+        wx:for-item="tab"
+        wx:key="key"
+        class="tab {{activeCategory === tab.key ? 'active' : ''}}"
+        data-key="{{tab.key}}"
+        bindtap="onCategoryChange"
+      >
+        {{tab.label}} ({{counts[tab.key]}})
+      </text>
+    </view>
+
+    <view class="results">
+      <block wx:for="{{items}}" wx:key="id">
+        <view class="result-card">
+          <view class="result-head">
+            <text class="result-title">{{item.title}}</text>
+            <text class="badge" wx:if="{{item.certified}}">已认证</text>
+          </view>
+          <view class="result-meta">{{item.meta}}</view>
+          <view class="result-tags">
+            <text wx:for="{{item.tags}}" wx:for-item="tag" wx:key="*this" class="tag">{{tag}}</text>
+          </view>
+          <view class="result-footer">
+            <text>{{item.highlight}}</text>
+            <text class="cta">查看详情</text>
+          </view>
+        </view>
+      </block>
+      <view class="empty" wx:if="{{!items.length}}">暂无数据，调整筛选试试</view>
+    </view>
+  </scroll-view>
+  <fab />
+</view>
