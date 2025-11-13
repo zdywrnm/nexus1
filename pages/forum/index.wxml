@@ -27,15 +27,15 @@
     <block wx:for="{{displayList}}" wx:key="id">
       <view class="post-card">
         <view class="card-head">
-          <text class="badge">{{item.帖子类型}}</text>
-          <text class="certified" wx:if="{{item.认证企业}}">认证企业</text>
+          <text class="badge">{{item.postType}}</text>
+          <text class="certified" wx:if="{{item.certified}}">认证企业</text>
         </view>
-        <view class="title">{{item.标题}}</view>
-        <view class="summary">{{item.摘要}}</view>
+        <view class="title">{{item.title}}</view>
+        <view class="summary">{{item.summary}}</view>
         <view class="meta">
-          <text>{{item.作者}}</text>
+          <text>{{item.author}}</text>
           <text>·</text>
-          <text>{{item.更新时间}}</text>
+          <text>{{item.updatedAt}}</text>
         </view>
       </view>
     </block>
