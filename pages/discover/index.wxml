@@ -506,7 +506,7 @@
             </view>
             <view class="result-desc">{{item.简介}}</view>
             <view class="result-tags">
-              <text wx:for="{{item.项目类型}}" wx:key="*this" class="tag">{{tag}}</text>
+              <text wx:for="{{item.项目类型}}" wx:for-item="tag" wx:key="*this" class="tag">{{tag}}</text>
               <text class="tag">{{item.开始时间}}</text>
               <text class="tag">
                 {{item.每天工作时长 === '自定义' ? item.自定义每天工作时长 + '小时' : item.每天工作时长}}
@@ -534,8 +534,8 @@
             <view class="result-tags">
               <text class="tag">{{item.学历要求}}</text>
               <text class="tag">{{item.经验要求}}</text>
-              <text wx:for="{{item.福利待遇}}" wx:key="*this" class="tag">{{tag}}</text>
-              <text wx:for="{{item.所属行业}}" wx:key="tag" class="tag">{{tag}}</text>
+              <text wx:for="{{item.福利待遇}}" wx:for-item="tag" wx:key="*this" class="tag">{{tag}}</text>
+              <text wx:for="{{item.所属行业}}" wx:for-item="tag" wx:key="tag" class="tag">{{tag}}</text>
             </view>
           </view>
         </block>
